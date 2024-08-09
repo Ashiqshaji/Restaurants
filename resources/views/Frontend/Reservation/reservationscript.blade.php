@@ -114,73 +114,225 @@
 
     const ConfirmModal = document.getElementById('ConfirmModal');
 
+    // if (ConfirmModal) {
+    //   ConfirmModal.addEventListener('show.bs.modal', function(event) {
+    //     // Update the modal's content.
+
+    //     let name = document.getElementById('inputName').value;
+    //     let email = document.getElementById('inputEmail').value;
+    //     let mobile = document.getElementById('inputMobile').value;
+    //     let guests = document.getElementById('inputGuest').value;
+
+    //     if (name && email && mobile && guests && selectedDate && selectedTime) {
+    //       const modalTitle = ConfirmModal.querySelector('.modal-title');
+    //       const modalBodyDate = ConfirmModal.querySelector('#modalDate');
+    //       const modalBodyTime = ConfirmModal.querySelector('#selectedTime');
+    //       const modalBodyMonth = ConfirmModal.querySelector('#modalMonth');
+    //       const modalBodyYear = ConfirmModal.querySelector('#modalYear');
+    //       const modalBodyDay = ConfirmModal.querySelector('#modalDay');
+
+    //       const modalBodyName = ConfirmModal.querySelector('#modalName');
+    //       const modalBodyEmail = ConfirmModal.querySelector('#modalEmail');
+    //       const modalBodyMobile = ConfirmModal.querySelector('#modalMobile');
+    //       const modalBodyGuests = ConfirmModal.querySelector('#modalGuests');
+
+
+
+
+
+    //       if (modalTitle) modalTitle.textContent = 'Please re-Confirm the details for reservation';
+    //       if (modalBodyDate) modalBodyDate.textContent = `${selectedDate.getDate().toString().padStart(2, '0')} ${selectedDate.getFullYear()}`;
+    //       if (modalBodyTime) modalBodyTime.textContent = selectedTime;
+    //       if (modalBodyMonth) modalBodyMonth.textContent = document.getElementById('modalMonth').textContent;
+    //       if (modalBodyYear) modalBodyYear.textContent = document.getElementById('modalYear').textContent;
+    //       if (modalBodyDay) modalBodyDay.textContent = document.getElementById('modalDay').textContent;
+    //       if (modalBodyName) modalBodyName.textContent = name ? name : 'No name provided';
+    //       if (modalBodyEmail) modalBodyEmail.textContent = email ? email : 'No email provided';
+    //       if (modalBodyMobile) modalBodyMobile.textContent = mobile ? mobile : 'No mobile number provided';
+    //       if (modalBodyGuests) modalBodyGuests.textContent = guests ? guests : 'Number of guests not specified';
+    //       // Get the current date and time
+    //       let now = new Date();
+
+    //       // Check if the selected date is in the past
+    //       if (selectedDate < now.setHours(0, 0, 0, 0)) {
+    //         alert('Reservation is not available for past dates.');
+    //         $('#ConfirmModal').modal('hide');
+
+            
+    //         const Reservation_Save = document.getElementById('Reservation_Save');
+    //           Reservation_Save.style.display = 'none';
+
+
+    //           message = 'Reservation is not available for past times.';
+    //           message1 = 'Warning Message';
+
+
+    //           $('#ConfirmModal').find('.modal-body')
+    //             .text(message)
+    //             .css({
+    //               'color': 'black',
+    //               'font-size': '16px'
+    //             });
+    //           $('#ConfirmModal').find('.modal-header').text(message1).css({
+    //             'color': 'Red',
+    //             'font-size': '16px'
+    //           });
+
+
+            
+        
+    //       }
+    //       if (selectedDate.toDateString() === now.toDateString()) {
+    //         let [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
+    //         let selectedDateTime = new Date(selectedDate);
+    //         selectedDateTime.setHours(selectedHour, selectedMinute, 0, 0);
+
+    //         if (selectedDateTime <= now) {
+
+    //           $('#ConfirmModal').modal('hide');
+
+
+    //           const Reservation_Save = document.getElementById('Reservation_Save');
+    //           Reservation_Save.style.display = 'none';
+
+
+    //           message = 'Reservation is not available for past times.';
+    //           message1 = 'Warning Message';
+
+
+    //           $('#ConfirmModal').find('.modal-body')
+    //             .text(message)
+    //             .css({
+    //               'color': 'black',
+    //               'font-size': '16px'
+    //             });
+    //           $('#ConfirmModal').find('.modal-header').text(message1).css({
+    //             'color': 'Red',
+    //             'font-size': '16px'
+    //           });
+
+
+    //           return;
+    //         }
+    //       }
+
+
+    //       // Check if the selected time is in the past on the current day
+
+    //     } else {
+
+    //       $('#ConfirmModal').modal('hide');
+
+
+    //       const Reservation_Save = document.getElementById('Reservation_Save');
+    //       Reservation_Save.style.display = 'none';
+    //       alert('Please fill out all fields.');
+
+    //       message = 'Please Enter the details';
+    //       message1 = 'Details of Reservation Missing';
+
+
+    //       $('#ConfirmModal').find('.modal-body')
+    //         .text(message)
+    //         .css({
+    //           'color': 'black',
+    //           'font-size': '16px'
+    //         });
+    //       $('#ConfirmModal').find('.modal-header').text(message1).css({
+    //         'color': 'Red',
+    //         'font-size': '16px'
+    //       });
+
+
+    //     }
+
+
+    //   });
+    // }
+
     if (ConfirmModal) {
-      ConfirmModal.addEventListener('show.bs.modal', function(event) {
-        // Update the modal's content.
+  ConfirmModal.addEventListener('show.bs.modal', function(event) {
+    // Get the input values
+    let name = document.getElementById('inputName').value;
+    let email = document.getElementById('inputEmail').value;
+    let mobile = document.getElementById('inputMobile').value;
+    let guests = document.getElementById('inputGuest').value;
 
-        let name = document.getElementById('inputName').value;
-        let email = document.getElementById('inputEmail').value;
-        let mobile = document.getElementById('inputMobile').value;
-        let guests = document.getElementById('inputGuest').value;
+    // Ensure all fields and date/time are filled
+    if (name && email && mobile && guests && selectedDate && selectedTime) {
+      // Get current date and time
+      let now = new Date();
 
-        if (name && email && mobile && guests && selectedDate && selectedTime) {
-          const modalTitle = ConfirmModal.querySelector('.modal-title');
-          const modalBodyDate = ConfirmModal.querySelector('#modalDate');
-          const modalBodyTime = ConfirmModal.querySelector('#selectedTime');
-          const modalBodyMonth = ConfirmModal.querySelector('#modalMonth');
-          const modalBodyYear = ConfirmModal.querySelector('#modalYear');
-          const modalBodyDay = ConfirmModal.querySelector('#modalDay');
+      // Check if the selected date is in the past
+      if (selectedDate < now.setHours(0, 0, 0, 0)) {
+        
+        $('#ConfirmModal').modal('hide');
+        showWarningMessage('Reservation is not available for past times.', 'Warning Message');
+        return;
+      }
 
-          const modalBodyName = ConfirmModal.querySelector('#modalName');
-          const modalBodyEmail = ConfirmModal.querySelector('#modalEmail');
-          const modalBodyMobile = ConfirmModal.querySelector('#modalMobile');
-          const modalBodyGuests = ConfirmModal.querySelector('#modalGuests');
+      // Check if the selected time is in the past on the current day
+      if (selectedDate.toDateString() === now.toDateString()) {
+        let [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
+        let selectedDateTime = new Date(selectedDate);
+        selectedDateTime.setHours(selectedHour, selectedMinute, 0, 0);
 
-
-
-
-
-          if (modalTitle) modalTitle.textContent = 'Please re-Confirm the details for reservation';
-          if (modalBodyDate) modalBodyDate.textContent = `${selectedDate.getDate().toString().padStart(2, '0')} ${selectedDate.getFullYear()}`;
-          if (modalBodyTime) modalBodyTime.textContent = selectedTime;
-          if (modalBodyMonth) modalBodyMonth.textContent = document.getElementById('modalMonth').textContent;
-          if (modalBodyYear) modalBodyYear.textContent = document.getElementById('modalYear').textContent;
-          if (modalBodyDay) modalBodyDay.textContent = document.getElementById('modalDay').textContent;
-          if (modalBodyName) modalBodyName.textContent = name ? name : 'No name provided';
-          if (modalBodyEmail) modalBodyEmail.textContent = email ? email : 'No email provided';
-          if (modalBodyMobile) modalBodyMobile.textContent = mobile ? mobile : 'No mobile number provided';
-          if (modalBodyGuests) modalBodyGuests.textContent = guests ? guests : 'Number of guests not specified';
-
-        } else {
-
+        if (selectedDateTime <= new Date()) {
           $('#ConfirmModal').modal('hide');
-
-
-          const Reservation_Save = document.getElementById('Reservation_Save');
-          Reservation_Save.style.display = 'none';
-          alert('Please fill out all fields.');
-
-          message = 'Please Enter the details';
-          message1 = 'Details of Reservation Missing';
-
-
-          $('#ConfirmModal').find('.modal-body')
-            .text(message)
-            .css({
-              'color': 'black',
-              'font-size': '16px'
-            });
-          $('#ConfirmModal').find('.modal-header').text(message1).css({
-            'color': 'black',
-            'font-size': '16px'
-          });
-
-
+          showWarningMessage('Reservation is not available for past times.', 'Warning Message');
+          return;
         }
+      }
 
+      // Update the modal's content if all checks are passed
+      const modalTitle = ConfirmModal.querySelector('.modal-title');
+      const modalBodyDate = ConfirmModal.querySelector('#modalDate');
+      const modalBodyTime = ConfirmModal.querySelector('#selectedTime');
+      const modalBodyMonth = ConfirmModal.querySelector('#modalMonth');
+      const modalBodyYear = ConfirmModal.querySelector('#modalYear');
+      const modalBodyDay = ConfirmModal.querySelector('#modalDay');
+      const modalBodyName = ConfirmModal.querySelector('#modalName');
+      const modalBodyEmail = ConfirmModal.querySelector('#modalEmail');
+      const modalBodyMobile = ConfirmModal.querySelector('#modalMobile');
+      const modalBodyGuests = ConfirmModal.querySelector('#modalGuests');
 
-      });
+      if (modalTitle) modalTitle.textContent = 'Please re-Confirm the details for reservation';
+      if (modalBodyDate) modalBodyDate.textContent = `${selectedDate.getDate().toString().padStart(2, '0')} ${selectedDate.getFullYear()}`;
+      if (modalBodyTime) modalBodyTime.textContent = selectedTime;
+      if (modalBodyMonth) modalBodyMonth.textContent = document.getElementById('modalMonth').textContent;
+      if (modalBodyYear) modalBodyYear.textContent = document.getElementById('modalYear').textContent;
+      if (modalBodyDay) modalBodyDay.textContent = document.getElementById('modalDay').textContent;
+      if (modalBodyName) modalBodyName.textContent = name ? name : 'No name provided';
+      if (modalBodyEmail) modalBodyEmail.textContent = email ? email : 'No email provided';
+      if (modalBodyMobile) modalBodyMobile.textContent = mobile ? mobile : 'No mobile number provided';
+      if (modalBodyGuests) modalBodyGuests.textContent = guests ? guests : 'Number of guests not specified';
+
+    } else {
+      // If any field is missing, hide the modal and show a warning
+      $('#ConfirmModal').modal('hide');
+     
+      showWarningMessage('Please Enter the details', 'Details of Reservation Missing');
     }
+  });
+}
+
+// Function to show warning message inside modal
+function showWarningMessage(message, message1) {
+  const Reservation_Save = document.getElementById('Reservation_Save');
+  Reservation_Save.style.display = 'none';
+
+  $('#ConfirmModal').find('.modal-body')
+    .text(message)
+    .css({
+      'color': 'black',
+      'font-size': '16px'
+    });
+  $('#ConfirmModal').find('.modal-header').text(message1).css({
+    'color': 'Red',
+    'font-size': '16px'
+  });
+}
+
 
     document.getElementById('Reservation_Save').addEventListener('click', function() {
 
@@ -226,13 +378,15 @@
         success: function(response) {
 
           console.log(response.email_status);
-          if (response != null || response != '') {
 
+          if (response.status) {
             message = 'To confirm your e-email,please click on the link we sent to your email address';
           } else {
-
             message = 'Reservation was successful!';
           }
+
+
+
 
           $('#ConfirmModal').modal('hide');
 
@@ -262,8 +416,7 @@
 
     function validateMobileNumber(mobile) {
 
-      const mobilePattern = /^[0-9]{9}$/;
-
+      const mobilePattern =/^0\d{9}$/; 
 
       if (mobilePattern.test(mobile)) {
         console.log('Valid mobile number');
@@ -282,15 +435,15 @@
 
 
       let errorMessageElement = document.getElementById('mobileError');
-    let reservationButton = document.getElementById('ConfirmModal_Reservation');
+      let reservationButton = document.getElementById('ConfirmModal_Reservation');
 
-    if (!validateMobileNumber(inputValue)) {
-        errorMessageElement.textContent = 'Please enter a valid 9-digit mobile number';
+      if (!validateMobileNumber(inputValue)) {
+        errorMessageElement.textContent = 'Please enter a valid 10-digit mobile number [starting with 0]';
         reservationButton.disabled = true; // Disable the button
-    } else {
+      } else {
         errorMessageElement.textContent = ''; // Clear the error message
         reservationButton.disabled = false; // Enable the button
-    }
+      }
 
 
 
@@ -298,17 +451,37 @@
   });
 
   $(document).ready(function() {
-  $('#ConfirmModal').modal({
-    backdrop: 'static',
-    keyboard: false
-  });
+    $('#ConfirmModal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
 
-  // Ensure that the modal cannot be closed by clicking outside
-  $('#ConfirmModal').on('click', function(event) {
-    var $target = $(event.target);
-    if ($target.hasClass('modal')) {
-      event.stopPropagation();
-    }
+
+    $('#ConfirmModal').on('click', function(event) {
+      var $target = $(event.target);
+      if ($target.hasClass('modal')) {
+        event.stopPropagation();
+      }
+    });
+
+
+
   });
-});
+  $(document).ready(function() {
+    $('#ConfirmReplayModalLabel').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+
+
+    $('#ConfirmReplayModalLabel').on('click', function(event) {
+      var $target = $(event.target);
+      if ($target.hasClass('modal')) {
+        event.stopPropagation();
+      }
+    });
+
+
+
+  });
 </script>

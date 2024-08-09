@@ -106,7 +106,7 @@
 
 
 <section class="">
-  <div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="ConfirmModal" tabindex="-1" aria-labelledby="ConfirmModalLabel" aria-hidden="true"  role="dialog"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -186,7 +186,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="ConfirmReplayModal" aria-hidden="true" aria-labelledby="ConfirmReplayModalLabel" tabindex="-1" data-backdrop="static">
+  <div class="modal fade" id="ConfirmReplayModal" aria-hidden="true" aria-labelledby="ConfirmReplayModalLabel" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

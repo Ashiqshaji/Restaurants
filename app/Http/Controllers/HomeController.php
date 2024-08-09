@@ -271,11 +271,11 @@ class HomeController extends Controller
 
   
             $this->sendEmail($emailstatus);
-            return response()->JSON($emailstatus);
+            return response()->json(['status' => $emailstatus]);
         }
         else
         {
-            return response()->JSON($emailstatus);
+            return response()->json(['status' => $emailstatus]);
         }
     }
 

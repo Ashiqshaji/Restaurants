@@ -7,7 +7,7 @@
 }
 .border-success {
     --bs-border-opacity: 1;
-    border-color: rgb(199 150 42) !important;
+    border-color: black !important;
 }
     </style>
         <div class="container d-flex justify-content-center align-items-center">

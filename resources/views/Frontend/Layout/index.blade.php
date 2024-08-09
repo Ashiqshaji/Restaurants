@@ -39,16 +39,8 @@
     <div class="container ">
 
       <div class="row">
-        <div class="col-2">
-          <nav id="navmenu" class="navmenu">
-            <ul>
-       
-            </ul>
-            <i class="mobile-nav-toggle  bi bi-list"></i>
-          </nav>
-
-        </div>
-        <div class="col-10 d-flex align-items-center" style="display: flex;justify-content: space-around;">
+        
+        <div class="col-12 d-flex align-items-center" style="display: flex;justify-content: space-around;">
           <a href="index.html" class="logo d-flex ">
             <img src="{{URL::to('assets/img/Quince-brand.png')}}" alt="">
             <!-- <h1 class="sitename">Quince</h1> -->
