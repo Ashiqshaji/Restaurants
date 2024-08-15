@@ -90,8 +90,8 @@
                                 <div class="row" style="text-align: center;" id="timeSlots"></div>
                                 <div class="col-12">
                                     <div class="submit_button">
-                                        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                                            id="ConfirmModal_Reservation" data-bs-target="#ConfirmModal">Make a
+                                        <button type="button" class="btn btn-primary btn-lg"
+                                            id="ConfirmModal_Reservation">Make a
                                             Reservation</button>
                                     </div>
                                 </div>
@@ -129,7 +129,8 @@
 
                                 <div class="booking_date">
                                     <p><strong><span id="modalDay"></span>,<span id="modalMonth"></span> , <span
-                                                id="modalDate"></span> </strong>at <span id="selectedTime"></span> </p>
+                                                id="modalDate"></span> {{ ' ' }} at <span
+                                                id="selectedTime"></span> </strong> </p>
 
                                 </div>
                                 <div class="booking_details">
@@ -225,6 +226,36 @@
             </div>
         </div>
     </section>
+
+
+
+    <section class="WarningModalSection">
+
+
+        <div class="modal fade" id="WarningModal" tabindex="-1" aria-labelledby="WarningModalLabel" aria-hidden="true"
+            role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer" style="display: flex;justify-content: space-around;align-items: center;">
+
+
+                        <button type="button" class="btn btn-reservation" id="reservation_close"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 
 
 

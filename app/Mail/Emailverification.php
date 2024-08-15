@@ -28,7 +28,7 @@ class Emailverification extends Mailable
     {
         $this->data = $data;
         $this->url = URL::temporarySignedRoute(
-            'verify.email',
+            'verify-email',
             now()->addMinutes(5),
             ['token' => $encryptedKey]
         );
@@ -57,10 +57,10 @@ class Emailverification extends Mailable
     public function build()
     {
         return $this->markdown('Email.custom')
-                    ->with([
-                        'data' => $this->data,
-                        'url' => $this->url
-                    ]);
+            ->with([
+                'data' => $this->data,
+                'url' => $this->url
+            ]);
     }
 
     /**

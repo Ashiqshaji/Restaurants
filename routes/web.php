@@ -10,15 +10,15 @@ Route::get('/Admin-login', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 
 // Route::get('/', function () {
@@ -33,7 +33,7 @@ Route::post('/Save_Reservation', [HomeController::class, 'Save_Reservation'])->n
 
 Route::get('/SendEmail', [HomeController::class, 'sendEmail'])->name('SendEmail');
 
-Route::get('/verify-email', [HomeController::class, 'verifyEmail'])->name('verify.email');
+Route::get('/verify-email', [HomeController::class, 'verifyEmail'])->name('verify-email');
 
 Route::get('/Emailchecking', [HomeController::class, 'Emailchecking'])->name('Emailchecking');
 
@@ -41,6 +41,10 @@ Route::get('/Emailchecking', [HomeController::class, 'Emailchecking'])->name('Em
 //Admin Routes
 
 Route::get('/Admin-List', [AdminController::class, 'index'])->name('admin.reservationlist');
+Route::post('/Each-timeslot', [AdminController::class, 'each_time_slot'])->name('admin.eachtimeslot');
+Route::post('/each-date', [AdminController::class, 'each_date'])->name('admin.eachdate');
+
+Route::get('/Assign-table', [AdminController::class, 'assign_table'])->name('admin.assigntable');
 
 
 
