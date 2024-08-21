@@ -10,15 +10,15 @@ Route::get('/Admin-login', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 
 // Route::get('/', function () {
@@ -40,15 +40,18 @@ Route::get('/Emailchecking', [HomeController::class, 'Emailchecking'])->name('Em
 
 //Admin Routes
 
-Route::get('/Admin-List', [AdminController::class, 'index'])->name('admin.reservationlist');
-Route::post('/Each-timeslot', [AdminController::class, 'each_time_slot'])->name('admin.eachtimeslot');
-Route::post('/each-date', [AdminController::class, 'each_date'])->name('admin.eachdate');
+Route::middleware('auth')->group(function () {
 
-Route::get('/Assign-table/{id}', [AdminController::class, 'assign_table'])->name('admin.assigntable');
-Route::post('/Selection-table', [AdminController::class, 'selectiontable'])->name('admin.selectiontable');
-Route::post('/Selection-section', [AdminController::class, 'selectionsection'])->name('admin.selectionsection');
-Route::get('/Assign-edit-table/{id}', [AdminController::class, 'assign_table_edit'])->name('admin.assigntableedit');
+    Route::get('/Admin-List', [AdminController::class, 'index'])->name('admin.reservationlist');
+    Route::post('/Each-timeslot', [AdminController::class, 'each_time_slot'])->name('admin.eachtimeslot');
+    Route::post('/each-date', [AdminController::class, 'each_date'])->name('admin.eachdate');
 
+    Route::get('/Assign-table/{id}', [AdminController::class, 'assign_table'])->name('admin.assigntable');
+    Route::post('/Selection-table', [AdminController::class, 'selectiontable'])->name('admin.selectiontable');
+    Route::post('/Selection-section', [AdminController::class, 'selectionsection'])->name('admin.selectionsection');
+    Route::get('/Assign-edit-table/{id}', [AdminController::class, 'assign_table_edit'])->name('admin.assigntableedit');
+    Route::post('/Removetable', [AdminController::class, 'Removetable'])->name('admin.removetable');
+});
 
 
 require __DIR__ . '/auth.php';

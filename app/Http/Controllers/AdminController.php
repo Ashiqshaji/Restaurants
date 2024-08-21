@@ -18,6 +18,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
 
+        $data_seesion = $request->session()->pull('data');
 
 
         if (!empty($request->all())) {
@@ -62,14 +63,17 @@ class AdminController extends Controller
             ->get();
 
 
+
         [$notNulltable, $isNulltable] = $datalist->partition(function ($item) {
             return !is_null($item->table_no);
         });
 
 
+
         $notNulltable = $notNulltable->toArray();
         $isNulltable = $isNulltable->toArray();
 
+    
 
         return view('Admin.Reservation.list', compact('groupedReservations', 'notNulltable', 'isNulltable', 'date'));
     }
@@ -216,59 +220,6 @@ class AdminController extends Controller
         return view('Admin.Reservation.Partials.table_list', compact('mergedResults'));
     }
 
-    // public function assign_table_list()
-    // {
-    //     $leftJoinQuery = DB::table('sys_floorlayout_designer as fld_tab')
-    //         ->leftJoin('trn_active_table as act_tab', function ($join) {
-    //             $join->on('fld_tab.btnIndex', '=', 'act_tab.tableIndex')
-    //                 ->on('fld_tab.btnSectionID', '=', 'act_tab.sectionID');
-    //         })
-    //         ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex');
-
-
-    //     $rightJoinQuery = DB::table('trn_active_table as act_tab')
-    //         ->rightJoin('sys_floorlayout_designer as fld_tab', function ($join) {
-    //             $join->on('fld_tab.btnIndex', '=', 'act_tab.tableIndex')
-    //                 ->on('fld_tab.btnSectionID', '=', 'act_tab.sectionID');
-    //         })
-    //         ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex');
-
-
-
-    //     $combinedResults = $leftJoinQuery->union($rightJoinQuery)->orderBy('btnText')->get();
-
-
-    //     //     $combinedResults = $leftJoinQuery
-    //     // ->union($rightJoinQuery)
-    //     // ->orderBy('btnText')
-    //     // ->where('fld_tab.btnSectionID', $desiredBtnSectionID) // Add your condition here
-    //     // ->get();
-
-
-
-
-    //     $reserved_table_list = DB::table('res_reserved_table')
-    //         ->where('res_reserved_table.reservation_date', $data_user->reservation_date)
-    //         ->where('res_reserved_table.reserved_blocks', $data_user->reserved_blocks)
-    //         ->get();
-
-
-    //     $mergedResults = $combinedResults->map(function ($item) use ($reserved_table_list) {
-
-    //         $reservation = $reserved_table_list->firstWhere('table_no', $item->btnText);
-
-    //         return (object) [
-    //             'btnText' => $item->btnText,
-    //             'btnTexts'  => Str::replace(' ', '', $item->btnText),
-    //             'btnSectionID' => $item->btnSectionID,
-    //             'tableIndex' => $item->tableIndex,
-    //             'reservationData' => $reservation ? $reservation : 'No',
-    //             'reservationData_color' => $reservation ? 'Yes' : 'No',
-
-    //         ];
-    //     });
-    // }
-
 
 
     public function selectiontable(Request $request)
@@ -405,9 +356,85 @@ class AdminController extends Controller
             ->select('fld_tab.btnText', 'fld_tab.btnSectionID')
             ->get();
     }
-    public function assign_table_edit()
+    public function assign_table_edit($id)
     {
-       print_r("skdljfnljkd");die();
+
+        $id = Crypt::decrypt($id);
+
+        $section_id = DB::table('sys_Section as sys')
+            ->select('sys.btnOrderID as btnOrderID', 'sys.Caption as Name')
+            ->get();
+
+
+
+        $data_user = DB::table('res_reserved_table as restable')
+
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.cus_key as cus_keyres', 'cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
+            ->where('restable.id',  $id)
+            ->first();
+
+
+
+        $data_user_selected = DB::table('res_reserved_table as restable')
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.table_no', 'restable.id as table_id')
+            ->where('restable.cus_key', $data_user->cus_keyres)
+            ->where('restable.reservation_date', $data_user->reservation_date)
+            ->where('restable.reserved_blocks', $data_user->reserved_blocks)
+            ->get();
+
+
+        // print_r($data_user_selected);
+        // die();
+
+
+        return view('Admin.Reservation.edittable', compact('data_user', 'section_id', 'data_user_selected'));
     }
 
+    public function Removetable(Request $request)
+    {
+
+
+        $data_user = DB::table('res_reserved_table as restable')
+
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.cus_key as cus_keyres', 'cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
+            ->where('restable.id',  $request->table_id_update)
+            ->first();
+
+        $date = $data_user->reservation_date;
+
+        $data_user_selected = DB::table('res_reserved_table as restable')
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.table_no', 'restable.id as table_id')
+            ->where('restable.cus_key', $data_user->cus_keyres)
+            ->where('restable.reservation_date', $data_user->reservation_date)
+            ->where('restable.reserved_blocks', $data_user->reserved_blocks)
+            ->get();
+
+        $data_user_selected_ids = $data_user_selected->pluck('table_id')->toArray();
+        $checkboxValues = $request->input('selected_item_update', []);
+
+        foreach ($checkboxValues as $value) {
+
+            DB::table('res_reserved_table')->where('id', $value)->delete();
+        }
+
+        $data_user_selected_count = $data_user_selected->count();
+        $checkboxValues_count = count($checkboxValues);
+
+        if ($data_user_selected_count === $checkboxValues_count) {
+            return redirect()->route('admin.reservationlist')->with('date', $date);
+        } else {
+
+
+            $diff = array_diff($data_user_selected_ids, $checkboxValues);
+            $firstNonMatchingId = !empty($diff) ? array_shift($diff) : null;
+
+            $encryptedId = Crypt::encrypt($firstNonMatchingId);
+
+            return redirect()->route('admin.assigntableedit', ['id' => $encryptedId])->with('date', $date);
+        }
+    }
 }

@@ -245,7 +245,9 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item" href="#">Check In </a></li>
                                                         <li><a class="dropdown-item" href="#">Cancel</a></li>
-                                                        <li><a class="dropdown-item" href="#">Edit Table</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}">Edit
+                                                                Table</a></li>
                                                     </ul>
                                                 </div>
 

@@ -1328,6 +1328,15 @@ h5#confirmModalLabel {
   border-color: #cb982b;
 }
 
+.assign_table_modal button#confirmButton {
+  background-color: #cb982b;
+  border-color: #cb982b;
+}
+button#RemoveButton {
+  background-color: #cb982b;
+  border-color: #cb982b;
+}
+
 .assigntable .section_id {
   width: 60%
 }

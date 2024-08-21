@@ -183,7 +183,10 @@
                                 </div> --}}
 
 
+                                {{-- @php
+                                    print_r($isNulltable);
 
+                                @endphp --}}
 
 
 
@@ -476,7 +479,7 @@
                                                                                                 href="#">Cancel</a>
                                                                                         </li>
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="#">Edit
+                                                                                                href="{{ route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Edit
                                                                                                 Table</a></li>
                                                                                     </ul>
                                                                                 </div>
@@ -539,6 +542,8 @@
             </button>
         </div>
     </div> --}}
+
+
 
     @include('Admin.Reservation.Scriptreservation')
 
