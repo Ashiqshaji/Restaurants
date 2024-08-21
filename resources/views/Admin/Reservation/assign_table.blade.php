@@ -2,56 +2,7 @@
 
 @Section('content')
     <style>
-        .assigntable .assign-box-icons {
-            font-size: 24px;
-            font-weight: 700;
-            padding: 20px;
-        }
 
-        .assigntable .assign-box-details-name {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .assigntable .assign-box-details-number {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .assigntable i.bi.bi-person-vcard {
-            font-size: 40px;
-            color: #233c5e;
-        }
-
-        .assigntable .assign-box-number {
-            display: flex;
-            align-items: center;
-
-        }
-
-
-
-        .assigntable .assign-box-number-count {
-            margin-top: 5px;
-        }
-
-        .assigntable .assign-box-date {
-            padding: 0px 20px;
-        }
-
-        .assigntable .assign-box-date-time {
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        .assigntable .assign-box-date-month {
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        .progress {
-            height: 0.2rem;
-        }
     </style>
     <section id="assigntable" class="assigntable">
 
@@ -64,7 +15,7 @@
 
                     <div class="assign-header-details">
                         <div class="row">
-                            <div class="col-5"
+                            <div class="col-12 col-md-5"
                                 style="
                             display: flex;
                             align-items: center;
@@ -79,43 +30,32 @@
                                 <div class="assign-box-details">
                                     <div class="assign-box-details-name">
                                         <span>
-                                            {{-- {{ ucwords($table_list_null->customer_name) }}  --}}
-                                            ASDDD</span>
+                                            {{ ucwords($data_user->customer_name) }}
+                                        </span>
                                     </div>
                                     <div class="assign-box-details-number">
 
-                                        {{-- @php
+                                        @php
 
                                             $formattedMobileNo =
-                                                substr(
-                                                    $table_list_null->mobile_no,
-                                                    0,
-                                                    3,
-                                                ) .
+                                                substr($data_user->mobile_no, 0, 3) .
                                                 '-' .
-                                                substr(
-                                                    $table_list_null->mobile_no,
-                                                    3,
-                                                    3,
-                                                ) .
+                                                substr($data_user->mobile_no, 3, 3) .
                                                 '-' .
-                                                substr(
-                                                    $table_list_null->mobile_no,
-                                                    6,
-                                                );
-                                        @endphp --}}
+                                                substr($data_user->mobile_no, 6);
+                                        @endphp
 
-                                        <span>14785695396</span>
+                                        <span>{{ $formattedMobileNo }}</span>
 
                                         {{-- <span>{{ $table_list_null->mobile_no }}</span> --}}
                                     </div>
                                     <div class="assign-box-details-email">
-                                        <span>Asd@gmail.com<span>
+                                        <span>{{ $data_user->email }}<span>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="col-3"
+                            <div class="col-12  col-md-3 "
                                 style="
                             display: flex;
                             align-items: center;
@@ -140,14 +80,18 @@
 
                                     </div>
                                     <div class="assign-box-number-count">
-                                        <span>3<span>
+                                        <span>{{ $data_user->no_of_people }}<span>
                                     </div>
 
 
                                 </div>
 
                             </div>
-                            <div class="col-4"
+
+
+
+
+                            <div class="col-12  col-md-4"
                                 style="
                             display: flex;
                             align-items: center;
@@ -158,16 +102,19 @@
 
                                     <div class="assign-box-date-time">
                                         <span>
-                                            06:00 PM</span>
+                                            {{ $data_user->reserved_blocks }}</span>
+
                                     </div>
                                     <div class="assign-box-date-day">
                                         <span>
-
-                                            Tuesday</span>
+                                            {{ \Carbon\Carbon::parse($data_user->reservation_date)->format('l') }}
+                                        </span>
                                     </div>
                                     <div class="assign-box-date-month">
                                         <span>
-                                            JULY 09,2024</span>
+                                            {{ \Carbon\Carbon::parse($data_user->reservation_date)->format('M d, Y') }}
+                                        </span>
+
                                     </div>
                                 </div>
 
@@ -186,9 +133,55 @@
                     </div>
 
                 </div>
+
+
                 <div class="col-12">
+                    <form action="{{ route('admin.selectiontable') }}" method="POST">
+                        @csrf
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="section_id">
+
+                                    <select id="section-select" class="form-select" aria-label="select Section">
+                                        <option value="">Please Select Section</option>
+                                        @foreach ($section_id as $section_id)
+                                            <option value={{ $section_id->btnOrderID }}>{{ $section_id->Name }}</option>
+                                        @endforeach
+
+
+
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <input type="hidden" id="table_id" name="table_id" value="{{ $data_user->table_id }}">
+
+                                <div class="table_assign_btn" id="table_assign_btn" style="display: none; ">
+                                    <div class="table_assign_btn_dir">
+
+                                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#confirmModal">Confirm Table</button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="table_list_id" id="table_list_id">
+
+                            </div>
+
+                        </div>
+                    </form>
 
                 </div>
+
+
+
+
 
 
 
@@ -201,4 +194,38 @@
 
 
     </section>
+
+    <section class="assign_table_modal" id="assign_table_modal">
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirm Table Selection</h5>
+
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to confirm the selected tables?
+                    </div>
+                    <div class="modal-footer"
+                        sstyle="
+                    display: flex;
+                    justify-content: center;
+                    border-top: 0px solid;
+                ">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .card.selected {
+            border: 2px solid #cb982b;
+            background-color: #cb982b;
+        }
+    </style>
+
+    @include('Admin.Reservation.Scriptassign')
 @endSection

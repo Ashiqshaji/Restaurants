@@ -2,7 +2,7 @@
     document.addEventListener('DOMContentLoaded', function() {
 
         let currentTime = new Date();
-        if (currentTime.getMinutes() >= 30) {
+        if (currentTime.getMinutes() >= 1) {
             currentTime.setHours(currentTime.getHours() + 1);
         }
         currentTime.setMinutes(0, 0, 0);
@@ -85,68 +85,7 @@
         //     console.log("Selected Date: " + selectedDate);
         // });
     });
-    // document.addEventListener('DOMContentLoaded', function() {
 
-    //     flatpickr("#datePicker", {
-    //         dateFormat: "Y-m-d",
-    //         onChange: function(selectedDates, dateStr, instance) {
-
-    //             alert("Selected date: " + dateStr);
-
-    //             $.ajax({
-    //                 url: '/each-date',
-    //                 method: 'POST',
-    //                 data: {
-    //                     time: dateStr,
-    //                     _token: '{{ csrf_token() }}'
-    //                 },
-    //                 beforeSend: function() {
-
-    //                     $('#preloader1').show();
-    //                 },
-    //                 success: function(response) {
-
-    //                     console.log(response);
-    //                     // $('#list_date_reservation').html(response);
-    //                 },
-    //                 error: function(xhr, status, error) {
-    //                     console.error('AJAX error: ', error);
-    //                 },
-    //                 complete: function() {
-
-    //                     $('#preloader1').hide();
-    //                 }
-    //             });
-
-
-    //         }
-    //         responsive: true
-    //     });
-
-
-    //     document.getElementById('showCalendar').addEventListener('click', function() {
-    //         const dateInput = document.getElementById('datePicker');
-    //         dateInput.focus();
-    //     });
-    // });
-
-    // document.addEventListener('DOMContentLoaded', function() {
-
-    //     flatpickr("#datePicker", {
-    //         dateFormat: "Y-m-d",
-    //         onChange: function(selectedDates, dateStr, instance) {
-
-    //             alert("Selected date: " + dateStr);
-
-    //             window.location.href = "/each-date/" + dateStr;
-
-    //         },
-
-    //         responsive: true
-    //     });
-
-
-    // });
 
     document.addEventListener('DOMContentLoaded', function() {
         flatpickr("#datePicker", {

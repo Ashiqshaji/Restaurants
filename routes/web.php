@@ -44,8 +44,10 @@ Route::get('/Admin-List', [AdminController::class, 'index'])->name('admin.reserv
 Route::post('/Each-timeslot', [AdminController::class, 'each_time_slot'])->name('admin.eachtimeslot');
 Route::post('/each-date', [AdminController::class, 'each_date'])->name('admin.eachdate');
 
-Route::get('/Assign-table', [AdminController::class, 'assign_table'])->name('admin.assigntable');
-
+Route::get('/Assign-table/{id}', [AdminController::class, 'assign_table'])->name('admin.assigntable');
+Route::post('/Selection-table', [AdminController::class, 'selectiontable'])->name('admin.selectiontable');
+Route::post('/Selection-section', [AdminController::class, 'selectionsection'])->name('admin.selectionsection');
+Route::get('/Assign-edit-table/{id}', [AdminController::class, 'assign_table_edit'])->name('admin.assigntableedit');
 
 
 

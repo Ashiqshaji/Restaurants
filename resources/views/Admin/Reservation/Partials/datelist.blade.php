@@ -286,6 +286,9 @@
                                                                     </div>
                                                                     <div id="list-box-table-button"
                                                                         class="list-box-table-button">
+                                                                        <a
+                                                                       href="{{ route('admin.assigntable', ['id' => Crypt::encrypt($table_list_null->table_id) ]) }}">
+
                                                                         <button type="button"
                                                                             class="btn btn-outline-secondary"> <svg
                                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -297,6 +300,7 @@
                                                                             </svg> ASSIGN
                                                                             TABLE
                                                                         </button>
+                                                                        </a>
                                                                     </div>
 
 

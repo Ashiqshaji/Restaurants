@@ -1028,21 +1028,23 @@ span.display_time {
 
 .list_reservation_table_details {
   padding: 20px 0px;
+  
 }
 
 
 .list_reservation_table_details .card {
-  border-radus: 0px;
+  border-radius: 0px;
   border: 1px solid white;
   border-radius: 0px !important;
-
+ 
 }
 
 .list_reservation_table_details .card-body {
-  border-radus: 0px;
+  border-radius: 0px;
   border: 1px solid white;
   border-radius: 0px !important;
   height: 800px;
+  overflow-y: scroll;
 }
 
 /*
@@ -1195,7 +1197,179 @@ i.bi.bi-person-vcard {
   font-weight: 700;
 }
 
+.assigntable .assign-box-icons {
+  font-size: 24px;
+  font-weight: 700;
+  padding: 20px;
+}
 
+.assigntable .assign-box-details-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.assigntable .assign-box-details-number {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.assigntable i.bi.bi-person-vcard {
+  font-size: 40px;
+  color: #233c5e;
+}
+
+.assigntable .assign-box-number {
+  display: flex;
+  align-items: center;
+
+}
+
+
+
+.assigntable .assign-box-number-count {
+  margin-top: 5px;
+}
+
+.assigntable .assign-box-date {
+  padding: 0px 20px;
+}
+
+.assigntable .assign-box-date-time {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.assigntable .assign-box-date-month {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.progress {
+  height: 0.2rem;
+}
+
+.assigntable .card.mt-3 {
+
+  border-radius: 1px;
+  height: 100px;
+  /* display: flex; */
+  align-items: center;
+  /* justify-content: space-evenly; */
+}
+
+.assigntable .card-body {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  align-content: space-between;
+}
+
+.assigntable h5.card-title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.assigntable .bg-data-color {
+  background-color: #58595b;
+  color: #828385;
+}
+
+.assigntable h4.card-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.assigntable button.btn.btn-primary.mt-3 {
+  background-color: #cb982b;
+  border-color: #cb982b;
+  padding: 10px 20px;
+  /* border-radius: 0px; */
+}
+
+div#table_assign_btn {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.assigntable .table_assign_btn_dir {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.assign_table_modal .modal-footer {
+  display: flex;
+  justify-content: center;
+  border-top: 0px solid;
+
+}
+
+.assign_table_modal .modal-body {
+  display: flex;
+  color: black;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+.assign_table_modal .modal-header {
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0px solid;
+}
+
+h5#confirmModalLabel {
+  color: black;
+}
+
+.assign_table_modal button#confirmButton {
+  background-color: #cb982b;
+  border-color: #cb982b;
+}
+
+.assigntable .section_id {
+  width: 60%
+}
+
+.assigntable select.form-select {
+  color: #cb982b;
+}
+
+.assigntable .form-select:focus {
+  border-color: #cb982b;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem #775713;
+}
+
+#list_date_reservation .dropdown-menu {
+  --bs-dropdown-min-width: 6rem !important;
+  --bs-dropdown-link-active-bg: #ce972c !important;
+}
+
+#list_date_reservation .btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+  border-color: white !important;
+}
+
+#list_date_reservation .btn:hover {
+  border-color: white !important;
+}
+
+#list_date_reservation .dropdown-item:focus,
+.dropdown-item:hover {
+  color: #e6e6e6;
+  background-color: #ce972c;
+}
+/* .scroller {
+  width: 300px;
+  height: 100px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+} */
 
 @media (max-width: 576px) {
   #list-box-table-button button.btn.btn-outline-secondary {
