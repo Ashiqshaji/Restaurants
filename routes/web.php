@@ -51,7 +51,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/Selection-section', [AdminController::class, 'selectionsection'])->name('admin.selectionsection');
     Route::get('/Assign-edit-table/{id}', [AdminController::class, 'assign_table_edit'])->name('admin.assigntableedit');
     Route::post('/Removetable', [AdminController::class, 'Removetable'])->name('admin.removetable');
+    Route::get('/Add-reservation', [AdminController::class, 'addreservation'])->name('admin.addreservation');
+    Route::get('/autocomplete-mobile', [AdminController::class, 'autocomplete'])->name('autocomplete.mobile');
+    Route::post('/reservation-date', [AdminController::class, 'reservation_date'])->name('admin.reservationdate');
+    Route::post('/Add-newreservation', [AdminController::class, 'addnewreservation'])->name('admin.addnewreservation');
 });
+
+
+
+
+
 
 
 require __DIR__ . '/auth.php';

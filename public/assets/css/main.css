@@ -1361,11 +1361,11 @@ button#RemoveButton {
 .btn.show,
 .btn:first-child:active,
 :not(.btn-check)+.btn:active {
-  border-color: white !important;
+  border-color: white ;
 }
 
 #list_date_reservation .btn:hover {
-  border-color: white !important;
+  border-color: white;
 }
 
 #list_date_reservation .dropdown-item:focus,

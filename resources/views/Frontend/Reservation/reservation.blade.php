@@ -23,89 +23,89 @@
 
                 <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
 
-                    <form>
-                        <div class="row gy-1">
-                            <div class="col-lg-12 ">
 
-                                <div class="row ">
-                                    <label for="Name" class="col-4 col-form-label">Name</label>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control" id="inputName" name="Name">
-                                    </div>
-                                </div>
-                                <div class="row ">
-                                    <label for="Email" class="col-4 col-form-label">Email</label>
-                                    <div class="col-8">
-                                        <input type="email" class="form-control" id="inputEmail" name="Email">
-                                    </div>
-                                </div>
-                                <div class="row ">
-                                    <label for="Mobile" class="col-4 col-form-label">Mobile</label>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control" id="inputMobile" name="Mobile">
-                                        <div id="mobileError" style="color: red; font-size: 12px;"></div>
-                                    </div>
-                                </div>
-                                <div class="row ">
-                                    <label for="Guest" class="col-4 col-form-label">No. of Guest</label>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control" id="inputGuest" name="Guest">
-                                    </div>
-                                </div>
+                    <div class="row gy-1">
+                        <div class="col-lg-12 ">
 
+                            <div class="row ">
+                                <label for="Name" class="col-4 col-form-label">Name</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="inputName" name="Name">
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <label for="Email" class="col-4 col-form-label">Email</label>
+                                <div class="col-8">
+                                    <input type="email" class="form-control" id="inputEmail" name="Email">
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <label for="Mobile" class="col-4 col-form-label">Mobile</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="inputMobile" name="Mobile">
+                                    <div id="mobileError" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <label for="Guest" class="col-4 col-form-label">No. of Guest</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="inputGuest" name="Guest">
+                                </div>
                             </div>
 
+                        </div>
+
+                        <div class="col-12">
+                            <div id='calendar'></div>
+
+                        </div>
+
+
+                        <div class="col-12">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="false"
+                                data-bs-interval="false">
+                                <div class="row text-center">
+                                    @for ($i = 0; $i <= 7 * 2 + 1; $i++)
+                                        @php
+                                            $time = \Carbon\Carbon::createFromTime(8, 0)->addMinutes($i * 60);
+                                            $timeStr = $time->format('H:i');
+                                            $buttonId = 'btn-' . $time->format('Hi');
+                                        @endphp
+                                        <div class="col-3 p-1">
+                                            <a id="{{ $buttonId }}" href="#" class="btn btn-primary time-slot-btn"
+                                                tabindex="-1" role="button"
+                                                data-time="{{ $timeStr }}">{{ $time->format('h:i a') }}</a>
+                                        </div>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div id="timeSlotsContainer" class="row">
+                                <!-- Time slots will be added dynamically here -->
+                            </div>
+
+
+                            <div class="row" style="text-align: center;" id="timeSlots"></div>
                             <div class="col-12">
-                                <div id='calendar'></div>
-
-                            </div>
-
-
-                            <div class="col-12">
-                                <div id="carouselExampleIndicators" class="carousel slide" data-bs-touch="false"
-                                    data-bs-interval="false">
-                                    <div class="row text-center">
-                                        @for ($i = 0; $i <= 7 * 2 + 1; $i++)
-                                            @php
-                                                $time = \Carbon\Carbon::createFromTime(8, 0)->addMinutes($i * 60);
-                                                $timeStr = $time->format('H:i');
-                                                $buttonId = 'btn-' . $time->format('Hi');
-                                            @endphp
-                                            <div class="col-3 p-1">
-                                                <a id="{{ $buttonId }}" href="#"
-                                                    class="btn btn-primary time-slot-btn" tabindex="-1" role="button"
-                                                    data-time="{{ $timeStr }}">{{ $time->format('h:i a') }}</a>
-                                            </div>
-                                        @endfor
-                                    </div>
+                                <div class="submit_button">
+                                    <button type="button" class="btn btn-primary btn-lg" id="ConfirmModal_Reservation">Make
+                                        a
+                                        Reservation</button>
                                 </div>
                             </div>
 
-                            <div class="col-12 mt-4">
-                                <div id="timeSlotsContainer" class="row">
-                                    <!-- Time slots will be added dynamically here -->
-                                </div>
+
+                        </div>
 
 
-                                <div class="row" style="text-align: center;" id="timeSlots"></div>
-                                <div class="col-12">
-                                    <div class="submit_button">
-                                        <button type="button" class="btn btn-primary btn-lg"
-                                            id="ConfirmModal_Reservation">Make a
-                                            Reservation</button>
-                                    </div>
-                                </div>
 
-
-                            </div>
-
-                    </form>
+                    </div>
 
                 </div>
 
             </div>
-
-        </div>
 
         </div>
     </section>

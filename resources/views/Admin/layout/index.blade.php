@@ -42,9 +42,44 @@
         href="{{ URL::to('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css') }}"
         rel="stylesheet">
 
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
+
+<style>
+    i.bi.bi-gear {
+        font-size: 20px;
+        color: #cb982b;
+    }
+
+    .user-icon a {
+        color: #ce972c;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    #user-icon .btn-check:checked+.btn,
+    .btn.active,
+    .btn.show,
+    .btn:first-child:active,
+    :not(.btn-check)+.btn:active {
+        border-color: black;
+    }
+
+    #user-icon .btn:hover {
+        color: var(--bs-btn-hover-color);
+        background-color: var(--bs-btn-hover-bg);
+        border-color: black;
+    }
+
+    .manully-adding {
+        display: flex;
+        align-items: center;
+    }
+    i.bi.bi-plus-square {
+    font-size: 25px;
+}
+</style>
 
 <body class="index-page">
 
@@ -53,12 +88,59 @@
 
             <div class="row ps-5 pt-4">
 
-                <div class="col-12 d-flex " style="display: flex;">
-                    <a href="index.html" class="logo d-flex ">
+                <div class="col-7 d-flex " style="display: flex;">
+                    <a href="{{ route('admin.reservationlist') }}" class="logo d-flex ">
                         <img src="{{ URL::to('assets/img/Quince-brand.png') }}" alt="">
                         <!-- <h1 class="sitename">Quince</h1> -->
                     </a>
                 </div>
+
+                <div class="col-3 d-flex " style="display: flex;justify-content: flex-end;">
+
+
+                </div>
+
+                <div class="col-2">
+                    <div class="user-icon" id="user-icon" style="padding: 0px 0px 5px 5px;">
+                        <div class="btn-group">
+                            <button class="btn  " type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
+                                aria-expanded="false">
+                                <i class="bi bi-gear"></i>
+
+                            </button>
+                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item"
+                                        href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                            {{ __('Log Out') }}
+                                        </a>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+
+
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
 
             </div>
 
