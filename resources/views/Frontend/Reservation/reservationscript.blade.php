@@ -730,12 +730,16 @@
 
                     console.log(response);
                     const message_title = response.status ?
-                        'Email Activation Required: Please Check Your Email' :
-                        'Please wait for your confirmation ';
+                        'Email activation required: Please check your email' :
+                        'Please wait booking confirmation ';
                     const message_Boody_head = response.status ? `Hi ${name}` : `Hi ${name}`;
                     const message_Boody_desc = response.status ?
                         'We sent you an email with an activation link. Please check your inbox (and spam/junk folder) to complete your table booking.' :
-                        'Please check your inbox (and spam/junk folder) to complete your table booking.';
+                        'Thank you for your booking request! We are currently processing it and you’ll receive an email from us once your booking has been confirmed.';
+                    const message_Boody_desc1 = response.status ?
+                        '' :
+                        'If you have any questions in the meantime, feel free to reach out at (+971) 56 418 4244. We appreciate your patience and look forward to welcoming you soon!';
+
                     const message_Boody_footer = response.status ? 'Thank you!' : 'Thank you!';
 
 
@@ -746,7 +750,10 @@
 
                     $('#ConfirmModal').modal('hide');
                     $('#ConfirmReplayModal').find('.ConfirmReplay_head').text(message_Boody_head);
-                    $('#ConfirmReplayModal').find('.ConfirmReplay_Message').text(message_Boody_desc);
+                    $('#ConfirmReplayModal').find('.ConfirmReplay_Message').text(
+                        message_Boody_desc);
+                    $('#ConfirmReplayModal').find('.ConfirmReplay_Message2').text(
+                        message_Boody_desc1);
                     $('#ConfirmReplayModal').find('.modal-header').text(message_title);
                     $('#ConfirmReplayModal').modal('show');
                 },
@@ -841,5 +848,36 @@
 
 
 
+    });
+    $(document).ready(function() {
+        $('#inputEmail').on('blur', function() {
+            var email = $(this).val();
+            var mobile = $('#inputMobile').val();
+
+            if (email) {
+                $.ajax({
+                    url: '/check-email-status',
+                    type: 'POST',
+                    data: {
+                        email: email,
+                        mobile: mobile,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#emailverified').text(response.email_status === 'verified' ?
+                            'Email is verified.' : '');
+                        $('#emailnotverified').text(response.email_status ===
+                            'not_verified' ? 'Email is not verified.' : '');
+
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                $('#emailverified').text('');
+                $('#emailnotverified').text('');
+            }
+        });
     });
 </script>

@@ -22,6 +22,11 @@
             font-weight: 700;
             margin-bottom: 10px;
         }
+
+        .ConfirmReplay_Message2 {
+            color: black;
+
+        }
     </style>
 
 
@@ -50,18 +55,23 @@
                                 </div>
                             </div>
                             <div class="row ">
-                                <label for="Email" class="col-4 col-form-label">Email</label>
-                                <div class="col-8">
-                                    <input type="email" class="form-control" id="inputEmail" name="Email">
-                                </div>
-                            </div>
-                            <div class="row ">
                                 <label for="Mobile" class="col-4 col-form-label">Mobile</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="inputMobile" name="Mobile">
+                                    <input type="text" class="form-control" id="inputMobile" placeholder="05X XXX XXXX"
+                                        name="Mobile">
                                     <div id="mobileError" style="color: red; font-size: 12px;"></div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <label for="Email" class="col-4 col-form-label">Email</label>
+                                <div class="col-8">
+                                    <input type="email" class="form-control" id="inputEmail" name="Email"
+                                        placeholder="example@gmail.com" aria-describedby="emailStatus">
+                                    <div id="emailverified" style="color: green; font-size: 12px;"></div>
+                                    <div id="emailnotverified" style="color: red; font-size: 12px;"></div>
+                                </div>
+                            </div>
+
                             <div class="row ">
                                 <label for="Guest" class="col-4 col-form-label">No. of Guest</label>
                                 <div class="col-8">
@@ -236,6 +246,11 @@
                             <!-- Message will be inserted here -->
                         </div>
                         <br>
+                        <div class="ConfirmReplay_Message2">
+                            <!-- Message will be inserted here -->
+                        </div>
+                        <br>
+
                         <div class="ConfirmReplay_data" style="text-align: center">
                             Thank you
                         </div>

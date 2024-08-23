@@ -76,32 +76,30 @@
         display: flex;
         align-items: center;
     }
+
     i.bi.bi-plus-square {
-    font-size: 25px;
-}
+        font-size: 25px;
+    }
 </style>
 
 <body class="index-page">
 
     <header id="header" class="header d-flex align-items-center">
-        <div class="container-fluid">
+        <div class="container">
 
-            <div class="row ps-5 pt-4">
+            <div class="row pt-4 pb-4">
 
-                <div class="col-7 d-flex " style="display: flex;">
+                <div class="col-8 d-flex " style="display: flex;">
                     <a href="{{ route('admin.reservationlist') }}" class="logo d-flex ">
                         <img src="{{ URL::to('assets/img/Quince-brand.png') }}" alt="">
                         <!-- <h1 class="sitename">Quince</h1> -->
                     </a>
                 </div>
 
-                <div class="col-3 d-flex " style="display: flex;justify-content: flex-end;">
 
 
-                </div>
-
-                <div class="col-2">
-                    <div class="user-icon" id="user-icon" style="padding: 0px 0px 5px 5px;">
+                <div class="col-4" style="display: flex;flex-direction: row-reverse;">
+                    <div class="user-icon" id="user-icon" style="padding: 0px 0px 0px 0px;">
                         <div class="btn-group">
                             <button class="btn  " type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"
                                 aria-expanded="false">

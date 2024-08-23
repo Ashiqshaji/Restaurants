@@ -349,4 +349,32 @@ class HomeController extends Controller
             return response()->json(['message' => 'Invalid or expired link.'], 400);
         }
     }
+
+    public function check_email_status(Request $request)
+    {
+
+        $email = $request->input('email');
+        $mobile = $request->input('mobile');
+
+        // Cache the customer key based on mobile number and email
+        $data = Cache::remember("customer_data_{$mobile}_{$email}", 60, function () use ($mobile, $email) {
+            // Retrieve both cus_key and email verification status
+            $customer = DB::table('mst_customer_supplier')
+                ->where('mobile_no', $mobile)
+                ->where('email', $email)
+                ->first(['cus_key', 'email_status']);
+
+            return [
+                'cus_key' => $customer->cus_key ?? null,
+                'email_verified' => isset($customer->email_status) ? ($customer->email_status == 1 ? 'not_verified' : 'verified') : 'not_verified',
+            ];
+        });
+
+        // Determine the email and mobile status
+        $emailStatus = $data['email_verified'];
+        // Return JSON response
+        return response()->json([
+            'email_status' => $emailStatus,
+        ]);
+    }
 }

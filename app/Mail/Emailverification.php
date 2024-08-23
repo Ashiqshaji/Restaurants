@@ -40,7 +40,7 @@ class Emailverification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Emailverification',
+            subject: 'EMAIL VERIFICATION',
         );
     }
 

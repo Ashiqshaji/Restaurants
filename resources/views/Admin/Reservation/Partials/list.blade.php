@@ -6,7 +6,12 @@
 
         <div class="row gap-2 ">
 
-
+            <div id="preloader1" style="display: none;">
+                <!-- Your preloader content, e.g., spinner -->
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
             @foreach ($isNulltable as $table_list_null1)
                 <div class="col-12">
 

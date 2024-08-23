@@ -292,7 +292,7 @@
                     dateInput.value = formattedDate;
                 }
 
-                alert(dateInput);
+
                 // Call fetchTimeSlots with the formatted date
                 fetchTimeSlots(formattedDate);
             }

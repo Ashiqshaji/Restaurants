@@ -15,6 +15,11 @@
             border-top-color: #ce972c;
             /* Change the arrow color to match the tooltip background */
         }
+
+        .search_mobile {
+            width: 50%;
+            margin: 10px 0px;
+        }
     </style>
 
     <section id="List" class="List section">
@@ -205,11 +210,11 @@
                                                                     @if ($nullTableIdCount && $nullTableIdCount)
                                                                         <div class="col-6"
                                                                             style="display: flex;align-items: center;justify-content: space-evenly;"
-                                                                            data-bs-toggle="tooltip"
-                                                                            title="UnAssigned Table" class="custom-tooltip">
+                                                                            data-bs-toggle="tooltip" title="Un Booked Table"
+                                                                            class="custom-tooltip">
 
                                                                             <div class="icontimeslot">
-                                                                                <img src="{{ URL::to('assets/img/Ellipse_1.png') }}"
+                                                                                <img src="{{ URL::to('assets/img/Ellipse_3.png') }}"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
@@ -222,10 +227,10 @@
 
                                                                         <div class="col-6"
                                                                             style="display: flex;align-items: center;justify-content: space-evenly; "
-                                                                            data-bs-toggle="tooltip" title="Assigned Table"
+                                                                            data-bs-toggle="tooltip" title="Booked Table"
                                                                             class="custom-tooltip">
                                                                             <div class="icontimeslot">
-                                                                                <img src="{{ URL::to('assets/img/Ellipse_2.png') }}"
+                                                                                <img src="{{ URL::to('assets/img/Ellipse_4.png') }}"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
@@ -324,6 +329,26 @@
 
 
                         </div>
+
+                        <div class="col-12">
+                            <div class="row ">
+                                <div class="col-12"
+                                    style="
+                                display: flex;
+                                flex-direction: row-reverse;
+                            ">
+                                    <div class="search_mobile">
+                                        <input type="text" class="form-control @error('Mobile') is-invalid @enderror"
+                                            id="inputMobile" placeholder="Mobile or Name" name="Mobile"
+                                            value="{{ old('Mobile') }}">
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="list_reservation_table_details">
 
@@ -372,8 +397,15 @@
 
 
 
+
                                 <div id="list_date_reservation" class="card">
                                     <div class="card-body" style="overflow: auto;">
+
+                                        <div id="preloader1" style="display: none;">
+                                            <div class="spinner-border" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
                                         <div class="row gap-2 ">
 
 

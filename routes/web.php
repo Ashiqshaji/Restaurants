@@ -37,6 +37,10 @@ Route::get('/verify-email', [HomeController::class, 'verifyEmail'])->name('verif
 
 Route::get('/Emailchecking', [HomeController::class, 'Emailchecking'])->name('Emailchecking');
 
+Route::post('/check-email-status', [HomeController::class, 'check_email_status'])->name('check_email_status');
+
+
+
 
 //Admin Routes
 
@@ -55,6 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/autocomplete-mobile', [AdminController::class, 'autocomplete'])->name('autocomplete.mobile');
     Route::post('/reservation-date', [AdminController::class, 'reservation_date'])->name('admin.reservationdate');
     Route::post('/Add-newreservation', [AdminController::class, 'addnewreservation'])->name('admin.addnewreservation');
+
+    Route::post('/search-mobile-date', [AdminController::class, 'searchmobiledate'])->name('admin.searchmobiledate');
+
+    
 });
 
 

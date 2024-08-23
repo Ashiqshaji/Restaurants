@@ -45,25 +45,26 @@ class AdminController extends Controller
 
 
         $groupedReservations = DB::table('res_reserved_table')
-        ->select(
-            'reserved_blocks',
-            DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
-            DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
-        )
-        ->where('reservation_date', $formattedDate)
-        ->groupBy('reserved_blocks')
-        ->get()
-        ->keyBy('reserved_blocks')
-        ->mapWithKeys(function ($item, $key) {
-            $dateTime = \DateTime::createFromFormat('h:i A', $key);
-            $formattedKey = $dateTime ? $dateTime->format('H:i') : $key;
-            return [
-                $formattedKey => [
-                    'null_tableid_count' => $item->null_tableid_count,
-                    'not_null_tableid_count' => $item->not_null_tableid_count,
-                ]
-            ];
-        });
+            ->select(
+                'reserved_blocks',
+                DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
+                DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
+            )
+            ->where('reservation_date', $formattedDate)
+            ->groupBy('reserved_blocks')
+            ->where('status', 'reserved')
+            ->get()
+            ->keyBy('reserved_blocks')
+            ->mapWithKeys(function ($item, $key) {
+                $dateTime = \DateTime::createFromFormat('h:i A', $key);
+                $formattedKey = $dateTime ? $dateTime->format('H:i') : $key;
+                return [
+                    $formattedKey => [
+                        'null_tableid_count' => $item->null_tableid_count,
+                        'not_null_tableid_count' => $item->not_null_tableid_count,
+                    ]
+                ];
+            });
 
         $datalist = DB::table('res_reserved_table as restable')
 
@@ -71,6 +72,7 @@ class AdminController extends Controller
             ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id')
             ->where('restable.reservation_date', $formattedDate)
             ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
+            ->where('restable.status', 'reserved')
             ->get();
 
 
@@ -113,6 +115,7 @@ class AdminController extends Controller
             ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id')
             ->where('restable.reservation_date', $formattedDate)
             ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
+            ->where('restable.status', 'reserved')
             ->get();
 
 
@@ -498,6 +501,7 @@ class AdminController extends Controller
                 DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
             )
             ->where('reservation_date', $formattedDate)
+            ->where('status', 'reserved')
             ->groupBy('reserved_blocks')
             ->get()
             ->keyBy('reserved_blocks')
@@ -657,5 +661,61 @@ class AdminController extends Controller
         $date->modify('+1 hour');
 
         return $date->format('h:i A');
+    }
+    public function  searchmobiledate(Request $request)
+    {
+
+        $time = $request->time;
+        $date = $request->date;
+        $mobile = $request->mobile;
+
+
+
+
+        $formattedDate = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
+
+        $timeCarbon = Carbon::parse($time);
+        $roundedCurrentTime = $timeCarbon->copy()->roundHour();
+        $roundedCurrentTimeStr = $roundedCurrentTime->format('h:i A');
+
+
+
+
+        // $datalist = DB::table('res_reserved_table as restable')
+
+        //     ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+        //     ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id')
+        //     ->where('restable.reservation_date', $formattedDate)
+        //     ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
+        //     ->get();
+
+        $datalist = DB::table('res_reserved_table as restable')
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select(
+                'cus.customer_name',
+                'cus.mobile_no',
+                'cus.email',
+                'restable.no_of_people',
+                'restable.table_no',
+                'restable.id as table_id'
+            )
+            ->where('restable.reservation_date', $formattedDate)
+            ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
+            ->where('restable.status', 'reserved')
+            ->where(function ($query) use ($mobile) {
+                $query->where('cus.mobile_no', 'like', '%' . $mobile . '%')
+                    ->orWhere('cus.customer_name', 'like', '%' . $mobile . '%');
+            })
+            ->get();
+
+        [$notNulltable, $isNulltable] = $datalist->partition(function ($item) {
+            return !is_null($item->table_no);
+        });
+
+
+        $notNulltable = $notNulltable->toArray();
+        $isNulltable = $isNulltable->toArray();
+
+        return view('Admin.Reservation.Partials.list', compact('notNulltable', 'isNulltable'));
     }
 }
