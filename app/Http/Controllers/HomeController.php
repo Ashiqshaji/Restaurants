@@ -310,6 +310,28 @@ class HomeController extends Controller
         }
     }
 
+    // public function sendEmail()
+    // {
+
+    //     try {
+    //         $data = [
+    //             'name' => '1111',
+    //             'message' => 'This is a custom email message.',
+
+    //         ];
+    //         $encryptedKey = Crypt::encryptString('1111');
+
+    //         // Mail::to($emailstatus->email)->queue(new Emailverification($data, $encryptedKey));
+
+    //         Mail::to('ashiqakkarayiluae@gmail.com')->queue(new Emailverification($data, $encryptedKey));
+
+    //         return response()->json(['message' => 'Email sent successfully!']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
+    //     }
+    // }
+
+
     public function verifyEmail(Request $request)
     {
         try {

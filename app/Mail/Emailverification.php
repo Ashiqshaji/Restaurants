@@ -56,7 +56,7 @@ class Emailverification extends Mailable
 
     public function build()
     {
-        return $this->markdown('Email.custom')
+        return $this->markdown('Email.verificationmail')
             ->with([
                 'data' => $this->data,
                 'url' => $this->url

@@ -605,7 +605,7 @@
             const minutes = time.getUTCMinutes(); // Get minutes
             const ampm = hours >= 12 ? 'PM' : 'AM'; // Determine AM/PM
             const formattedHours = String(hours % 12 || 12).padStart(2,
-            '0'); // Convert to 12-hour format with leading zero
+                '0'); // Convert to 12-hour format with leading zero
             const formattedMinutes = String(minutes).padStart(2, '0'); // Format minutes with leading zero
 
             return `${formattedHours}:${formattedMinutes} ${ampm}`;
@@ -729,12 +729,25 @@
                 success: function(response) {
 
                     console.log(response);
+                    const message_title = response.status ?
+                        'Email Activation Required: Please Check Your Email' :
+                        'Please wait for your confirmation ';
+                    const message_Boody_head = response.status ? `Hi ${name}` : `Hi ${name}`;
+                    const message_Boody_desc = response.status ?
+                        'We sent you an email with an activation link. Please check your inbox (and spam/junk folder) to complete your table booking.' :
+                        'Please check your inbox (and spam/junk folder) to complete your table booking.';
+                    const message_Boody_footer = response.status ? 'Thank you!' : 'Thank you!';
+
+
+
                     const message = response.status ?
-                        'To confirm your e-mail, please click on the link we sent to your email address' :
+                        message_Boody_desc :
                         'Reservation was successful!';
 
                     $('#ConfirmModal').modal('hide');
-                    $('#ConfirmReplayModal').find('.ConfirmReplay_Message').text(message);
+                    $('#ConfirmReplayModal').find('.ConfirmReplay_head').text(message_Boody_head);
+                    $('#ConfirmReplayModal').find('.ConfirmReplay_Message').text(message_Boody_desc);
+                    $('#ConfirmReplayModal').find('.modal-header').text(message_title);
                     $('#ConfirmReplayModal').modal('show');
                 },
                 error: function(xhr, status, error) {

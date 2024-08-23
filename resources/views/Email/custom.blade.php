@@ -1,7 +1,7 @@
-@component('mail::message')
+{{-- @component('mail::message')
     # Verify Your Email Address
 
-    Hello {{ $data['name'] }},
+    Dear {{ $data['name'] }},
 
     Please click the button below to verify your email address.
 
@@ -13,4 +13,4 @@
 
     Thanks,<br>
     {{ config('app.name') }}
-@endcomponent
+@endcomponent --}}

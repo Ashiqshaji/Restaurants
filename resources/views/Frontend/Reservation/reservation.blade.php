@@ -6,6 +6,22 @@
         .ConfirmReplay_Message {
             color: black;
         }
+
+        #ConfirmReplayModal .modal-header {
+            border-bottom: 0px solid red !important;
+            color: black;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            border-bottom: 1px solid #ce972c;
+        }
+
+        .ConfirmReplay_head {
+            color: #ce972c;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
     </style>
 
 
@@ -208,11 +224,20 @@
 
                     </div>
                     <div class="modal-body">
-                        <div class="ConfirmReplay_data">
-                            Thank you for Being a Valuable Customer
+                        {{-- <div class="ConfirmReplay_head">
+                            <!-- Message will be inserted here -->
+                        </div> --}}
+
+                        <div class="ConfirmReplay_head">
+                            <!-- Message will be inserted here -->
                         </div>
+
                         <div class="ConfirmReplay_Message">
                             <!-- Message will be inserted here -->
+                        </div>
+                        <br>
+                        <div class="ConfirmReplay_data" style="text-align: center">
+                            Thank you
                         </div>
 
                     </div>
