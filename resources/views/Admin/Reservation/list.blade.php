@@ -687,9 +687,9 @@
                                                                                                 In
                                                                                             </a></li>
 
-                                                                                        {{-- <li><a class="dropdown-item"
+                                                                                         <li><a class="dropdown-item"
                                                                                                 href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Cancel</a>
-                                                                                        </li> --}}
+                                                                                        </li> 
                                                                                         {{-- <a class="dropdown-item cancel-link"
            href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}"
            data-table-id="{{ $table_list_notnull->table_id }}">

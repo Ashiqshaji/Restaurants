@@ -19,7 +19,7 @@
          @endforeach
      </div>
  </div> --}}
- <div class="col-12">
+ {{-- <div class="col-12">
      <div class="row">
          @foreach ($mergedResults as $results)
              @php
@@ -43,7 +43,34 @@
              </div>
          @endforeach
      </div>
- </div>
+ </div> --}}
+
+ <div class="col-12">
+    <div class="row">
+        @foreach ($matchedReservations as $results)
+            @php
+                $colorClass = $results->reservationData_color == 'Yes' ? 'bg-data-color' : '';
+                $isSelectable = $results->reservationData_color != 'Yes';
+            @endphp
+            <div class="col-2">
+                <div class="card mt-3 {{ $colorClass }}" id="card{{ $results->btnTexts }}"
+                    style="cursor: {{ $isSelectable ? 'pointer' : 'not-allowed' }};">
+                    <div class="card-body">
+                        @if ($isSelectable)
+                            <input class="form-check-input" type="checkbox" name="selected_items[]"
+                                value="{{ $results->btnTexts }}" id="item{{ $results->btnTexts }}"
+                                onclick="toggleCard('{{ $results->btnTexts }}')" style="display:none">
+                        @endif
+                        <label for="item{{ $results->btnTexts }}">
+                            <h4 class="card-title">{{ htmlspecialchars($results->btnText) }}</h4>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 
  {{--
 <script>

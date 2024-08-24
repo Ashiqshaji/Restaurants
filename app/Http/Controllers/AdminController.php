@@ -165,19 +165,112 @@ class AdminController extends Controller
         return view('Admin.Reservation.assign_table', compact('data_user', 'section_id'));
     }
 
+    // public function selectionsection(Request $request)
+    // {
+
+    //     $id = $request->tableid;
+    //     $section_id = $request->section_id;
+
+
+    //     $data_user = DB::table('res_reserved_table as restable')
+    //         ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+    //         ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
+    //         ->where('restable.id',  $id)
+    //         ->first();
+
+    //     $leftJoinQuery = DB::table('sys_floorlayout_designer as fld_tab')
+    //         ->leftJoin('trn_active_table as act_tab', function ($join) {
+    //             $join->on('fld_tab.btnIndex', '=', 'act_tab.tableIndex')
+    //                 ->on('fld_tab.btnSectionID', '=', 'act_tab.sectionID');
+    //         })
+    //         ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex')
+    //         ->where('fld_tab.btnSectionID', $section_id);
+
+
+    //     $rightJoinQuery = DB::table('trn_active_table as act_tab')
+    //         ->rightJoin('sys_floorlayout_designer as fld_tab', function ($join) {
+    //             $join->on('fld_tab.btnIndex', '=', 'act_tab.tableIndex')
+    //                 ->on('fld_tab.btnSectionID', '=', 'act_tab.sectionID');
+    //         })
+    //         ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex')
+    //         ->where('fld_tab.btnSectionID', $section_id);
+
+
+
+    //     // $combinedResults = $leftJoinQuery->union($rightJoinQuery)->orderBy('btnText')->get();
+
+
+    //     $combinedResults = $leftJoinQuery
+    //         ->union($rightJoinQuery)
+    //         ->orderBy('btnText')
+    //         ->where('fld_tab.btnSectionID', $section_id) // Add your condition here
+    //         ->get();
+
+
+    //     // print_r($combinedResults);
+    //     // die();
+
+    //     $reserved_table_list = DB::table('res_reserved_table')
+    //         ->where('reservation_date', $data_user->reservation_date)
+    //         ->where('reserved_blocks', $data_user->reserved_blocks)
+    //         ->whereNotNull('table_no')
+    //         ->where(function ($query) {
+    //             $query->where('status', 'reserved')
+    //                 ->orWhere('status', 'checkedin');
+    //         })
+    //         ->get();
+
+    //     // $mergedResults = $combinedResults->map(function ($item) use ($reserved_table_list) {
+
+    //     //     $reservation = $reserved_table_list->firstWhere('table_no', 'F5');
+
+    //     //     return (object) [
+    //     //         'btnText' => $item->btnText,
+    //     //         'btnTexts'  => Str::replace(' ', '', $item->btnText),
+    //     //         'btnSectionID' => $item->btnSectionID,
+    //     //         'tableIndex' => $item->tableIndex,
+    //     //         'reservationData_color' => $reservation ? 'Yes' : 'No',
+
+    //     //     ];
+    //     // });
+
+
+    //     $reservationsCollection = $reserved_table_list;
+    //     $btnTextsCollection = $combinedResults;
+
+    //     // Create a map of btnText for quick lookup
+    //     $btnTextMap = $btnTextsCollection->keyBy(function ($item) {
+    //         return trim($item['btnText']);
+    //     });
+
+    //     // Map reservations to the btnTexts collection
+    //     $matchedReservations = $reservationsCollection->map(function ($reservation) use ($btnTextMap) {
+    //         $btnText = trim($reservation['table_no']);
+    //         $btnTextDetails = $btnTextMap->get($btnText, []);
+    //         return array_merge($btnTextDetails, $reservation);
+    //     });
+
+
+    //     dd($matchedReservations);
+    //     printf($combinedResults);
+    //     die();
+    //     return view('Admin.Reservation.Partials.table_list', compact('mergedResults'));
+    // }
+
     public function selectionsection(Request $request)
     {
 
         $id = $request->tableid;
         $section_id = $request->section_id;
 
-
+        // Fetch reservation details
         $data_user = DB::table('res_reserved_table as restable')
             ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
             ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
-            ->where('restable.id',  $id)
+            ->where('restable.id', $id)
             ->first();
 
+        // Fetch combined results
         $leftJoinQuery = DB::table('sys_floorlayout_designer as fld_tab')
             ->leftJoin('trn_active_table as act_tab', function ($join) {
                 $join->on('fld_tab.btnIndex', '=', 'act_tab.tableIndex')
@@ -185,7 +278,6 @@ class AdminController extends Controller
             })
             ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex')
             ->where('fld_tab.btnSectionID', $section_id);
-
 
         $rightJoinQuery = DB::table('trn_active_table as act_tab')
             ->rightJoin('sys_floorlayout_designer as fld_tab', function ($join) {
@@ -195,54 +287,58 @@ class AdminController extends Controller
             ->select('fld_tab.btnText', 'fld_tab.btnSectionID', 'act_tab.tableIndex')
             ->where('fld_tab.btnSectionID', $section_id);
 
-
-
-        // $combinedResults = $leftJoinQuery->union($rightJoinQuery)->orderBy('btnText')->get();
-
-
+        // Union and fetch combined results
         $combinedResults = $leftJoinQuery
             ->union($rightJoinQuery)
             ->orderBy('btnText')
-            ->where('fld_tab.btnSectionID', $section_id) // Add your condition here
             ->get();
 
-
-        // print_r($combinedResults);
-        // die();
-
-        // $reserved_table_list = DB::table('res_reserved_table')
-        //     ->where('res_reserved_table.reservation_date', $data_user->reservation_date)
-        //     ->where('res_reserved_table.reserved_blocks', $data_user->reserved_blocks)
-        //     ->where('res_reserved_table.status', 'reserved')
-        //     ->get();
-
+        // Fetch reserved tables
         $reserved_table_list = DB::table('res_reserved_table')
-            ->where('res_reserved_table.reservation_date', $data_user->reservation_date)
-            ->where('res_reserved_table.reserved_blocks', $data_user->reserved_blocks)
-            ->whereNotNull('res_reserved_table.table_no')
+            ->where('reservation_date', $data_user->reservation_date)
+            ->where('reserved_blocks', $data_user->reserved_blocks)
+            ->whereNotNull('table_no')
             ->where(function ($query) {
-                $query->where('res_reserved_table.status', 'reserved')
-                    ->orWhere('res_reserved_table.status', 'checkedin');
+                $query->where('status', 'reserved')
+                    ->orWhere('status', 'checkedin');
             })
             ->get();
 
+        // Convert collections to arrays if necessary
+        $reserved_table_list = $reserved_table_list->map(function ($item) {
+            return (array) $item;
+        });
 
-        $mergedResults = $combinedResults->map(function ($item) use ($reserved_table_list) {
+        $combinedResults = $combinedResults->map(function ($item) {
+            return (array) $item;
+        });
 
-            $reservation = $reserved_table_list->firstWhere('table_no', $item->btnText);
+        // Create a map of btnText for quick lookup
+        $btnTextMap = collect($combinedResults)->keyBy(function ($item) {
+            return trim($item['btnText']);
+        });
+
+        // Map reservations to the btnTexts collection
+        $matchedReservations = collect($combinedResults)->map(function ($item) use ($reserved_table_list, $btnTextMap) {
+            $btnText = trim($item['btnText']);
+            $reservation = collect($reserved_table_list)->firstWhere(function ($reservation) use ($btnText) {
+                return trim($reservation['table_no']) === $btnText;
+            });
 
             return (object) [
-                'btnText' => $item->btnText,
-                'btnTexts'  => Str::replace(' ', '', $item->btnText),
-                'btnSectionID' => $item->btnSectionID,
-                'tableIndex' => $item->tableIndex,
+                'btnText' => $item['btnText'],
+                'btnTexts' => Str::replace(' ', '', $item['btnText']),
+                'btnSectionID' => $item['btnSectionID'],
+                'tableIndex' => $item['tableIndex'],
                 'reservationData_color' => $reservation ? 'Yes' : 'No',
-
+                'reservationDetails' => $reservation ?: null,
             ];
         });
 
+        // // Output or store the results
+        // dd($matchedReservations);
 
-        return view('Admin.Reservation.Partials.table_list', compact('mergedResults'));
+        return view('Admin.Reservation.Partials.table_list', compact('matchedReservations'));
     }
 
 

@@ -599,7 +599,9 @@ unset($__errorArgs, $__bag); ?>"
                                                                                                 In
                                                                                             </a></li>
 
-                                                                                        
+                                                                                         <li><a class="dropdown-item"
+                                                                                                href="<?php echo e(route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Cancel</a>
+                                                                                        </li> 
                                                                                         
                                                                                         <li><a class="dropdown-item"
                                                                                                 href="<?php echo e(route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Edit
