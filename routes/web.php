@@ -33,7 +33,7 @@ Route::post('/Save_Reservation', [HomeController::class, 'Save_Reservation'])->n
 
 Route::get('/SendEmail', [HomeController::class, 'sendEmail'])->name('SendEmail');
 
-Route::get('/verify-email', [HomeController::class, 'verifyEmail'])->name('verify-email');
+Route::get('/verifyemailres', [HomeController::class, 'verifyEmail'])->name('verifyemailres');
 
 Route::get('/Emailchecking', [HomeController::class, 'Emailchecking'])->name('Emailchecking');
 
@@ -62,7 +62,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/search-mobile-date', [AdminController::class, 'searchmobiledate'])->name('admin.searchmobiledate');
 
-    
+
+    Route::get('/Checkin/{id}', [AdminController::class, 'checkin'])->name('admin.checkin');
+    Route::get('/Canceldtable/{id}', [AdminController::class, 'canceldtable'])->name('admin.canceldtable');
 });
 
 

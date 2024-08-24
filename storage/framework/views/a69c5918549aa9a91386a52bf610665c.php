@@ -1,3 +1,7 @@
+
+
+
+
 <script>
     // document.addEventListener('DOMContentLoaded', function() {
 
@@ -209,9 +213,7 @@
 
             // Use the selected time from the clicked time slot card
             let timeToPass = selectedTime;
-
-            alert("Date: " + pageDate);
-            alert("Time: " + timeToPass);
+            document.getElementById('preloader1').style.display = 'block';
 
             $.ajax({
                 url: '/search-mobile-date',
@@ -223,20 +225,43 @@
                     _token: '<?php echo e(csrf_token()); ?>'
                 },
                 beforeSend: function() {
-                    $('#preloader').addClass('show');
+                    $('#preloader1').addClass('show');
                 },
                 success: function(response) {
-                    $('#mobile_search_results').html(response);
+                    $('#list_date_reservation').html(response);
                 },
                 complete: function() {
-                    $('#preloader').removeClass('show');
+                    $('#preloader1').removeClass('show');
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX error: ', error);
                 }
             });
         });
+
+
+
     });
+
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     // Attach event listener to links with class 'cancel-link'
+    //     document.querySelectorAll('.cancel-link').forEach(function(link) {
+    //         link.addEventListener('click', function(event) {
+    //             event.preventDefault(); // Prevent the default link behavior
+
+    //             // Extract the table ID from the link's data attributes
+    //             var tableId = this.dataset.tableId;
+
+    //             // Set the form action URL and the table ID in the modal
+    //             document.getElementById('cancelForm').action = this.href;
+    //             document.getElementById('modalTableId').value = tableId;
+
+    //             // Show the modal
+    //             $('#cancelModal').modal('show');
+    //         });
+    //     });
+    // });
 
 
 

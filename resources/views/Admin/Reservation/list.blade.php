@@ -245,11 +245,11 @@
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly;"
                                                                                 data-bs-toggle="tooltip"
-                                                                                title="Un Assigned Table"
+                                                                                title="Un Booked Table"
                                                                                 class="custom-tooltip">
 
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="{{ URL::to('assets/img/Ellipse_1.png') }}"
+                                                                                    <img src="{{ URL::to('assets/img/Ellipse_3.png') }}"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
@@ -264,10 +264,9 @@
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly; "
                                                                                 data-bs-toggle="tooltip"
-                                                                                title="Assigned Table"
-                                                                                class="custom-tooltip">
+                                                                                title="Booked Table" class="custom-tooltip">
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="{{ URL::to('assets/img/Ellipse_2.png') }}"
+                                                                                    <img src="{{ URL::to('assets/img/Ellipse_4.png') }}"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
@@ -311,10 +310,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2"
-                                    style="
-                                display: flex;
-                                flex-direction: row-reverse;
-                            ">
+                                    style="display: flex; flex-direction: row-reverse;     margin-top: -7px; ">
                                     <div class="listofreservation">
                                         <a href="{{ route('admin.addreservation') }}">
                                             <i class="bi bi-plus-square" data-bs-toggle="tooltip"
@@ -687,11 +683,18 @@
                                                                                     </button>
                                                                                     <ul class="dropdown-menu">
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="#">Check In
+                                                                                                href="{{ route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Check
+                                                                                                In
                                                                                             </a></li>
-                                                                                        <li><a class="dropdown-item"
-                                                                                                href="#">Cancel</a>
-                                                                                        </li>
+
+                                                                                        {{-- <li><a class="dropdown-item"
+                                                                                                href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Cancel</a>
+                                                                                        </li> --}}
+                                                                                        {{-- <a class="dropdown-item cancel-link"
+           href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}"
+           data-table-id="{{ $table_list_notnull->table_id }}">
+           Cancel
+        </a> --}}
                                                                                         <li><a class="dropdown-item"
                                                                                                 href="{{ route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Edit
                                                                                                 Table</a></li>

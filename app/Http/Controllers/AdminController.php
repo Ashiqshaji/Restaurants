@@ -210,9 +210,20 @@ class AdminController extends Controller
         // print_r($combinedResults);
         // die();
 
+        // $reserved_table_list = DB::table('res_reserved_table')
+        //     ->where('res_reserved_table.reservation_date', $data_user->reservation_date)
+        //     ->where('res_reserved_table.reserved_blocks', $data_user->reserved_blocks)
+        //     ->where('res_reserved_table.status', 'reserved')
+        //     ->get();
+
         $reserved_table_list = DB::table('res_reserved_table')
             ->where('res_reserved_table.reservation_date', $data_user->reservation_date)
             ->where('res_reserved_table.reserved_blocks', $data_user->reserved_blocks)
+            ->whereNotNull('res_reserved_table.table_no')
+            ->where(function ($query) {
+                $query->where('res_reserved_table.status', 'reserved')
+                    ->orWhere('res_reserved_table.status', 'checkedin');
+            })
             ->get();
 
 
@@ -396,6 +407,8 @@ class AdminController extends Controller
             ->where('restable.cus_key', $data_user->cus_keyres)
             ->where('restable.reservation_date', $data_user->reservation_date)
             ->where('restable.reserved_blocks', $data_user->reserved_blocks)
+            ->where('restable.status', 'reserved')
+
             ->get();
 
 
@@ -432,7 +445,14 @@ class AdminController extends Controller
 
         foreach ($checkboxValues as $value) {
 
-            DB::table('res_reserved_table')->where('id', $value)->delete();
+            // DB::table('res_reserved_table')->where('id', $value)->delete();
+
+            DB::table('res_reserved_table')
+                ->where('id', $value) // Use the appropriate condition
+                ->update([
+                    'updated_on' => now(),
+                    'status' => 'cancelled',
+                ]);
         }
 
         $data_user_selected_count = $data_user_selected->count();
@@ -717,5 +737,74 @@ class AdminController extends Controller
         $isNulltable = $isNulltable->toArray();
 
         return view('Admin.Reservation.Partials.list', compact('notNulltable', 'isNulltable'));
+    }
+
+    public function checkin($id)
+    {
+
+        $id = Crypt::decrypt($id);
+
+        $data_user = DB::table('res_reserved_table as restable')
+
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('cus.customer_name', 'restable.cus_key as cus_keyres', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
+            ->where('restable.id',  $id)
+            ->first();
+
+
+        $data_user_selected = DB::table('res_reserved_table as restable')
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.table_no', 'restable.id as table_id')
+            ->where('restable.cus_key', $data_user->cus_keyres)
+            ->where('restable.reservation_date', $data_user->reservation_date)
+            ->where('restable.reserved_blocks', $data_user->reserved_blocks)
+            ->get();
+
+        foreach ($data_user_selected  as $value) {
+
+            DB::table('res_reserved_table')
+                ->where('id', $value->table_id) // Use the appropriate condition
+                ->update([
+                    'updated_on' => now(),
+                    'status' => 'checkedin',
+                ]);
+        }
+
+
+        return redirect()->route('admin.reservationlist');
+    }
+    public function canceldtable($id)
+    {
+
+        $id = Crypt::decrypt($id);
+
+        $data_user = DB::table('res_reserved_table as restable')
+
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('cus.customer_name', 'restable.cus_key as cus_keyres', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.reservation_date as reservation_date', 'restable.reserved_blocks as reserved_blocks')
+            ->where('restable.id',  $id)
+            ->first();
+
+
+        $data_user_selected = DB::table('res_reserved_table as restable')
+            ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
+            ->select('restable.table_no', 'restable.id as table_id')
+            ->where('restable.cus_key', $data_user->cus_keyres)
+            ->where('restable.reservation_date', $data_user->reservation_date)
+            ->where('restable.reserved_blocks', $data_user->reserved_blocks)
+            ->get();
+
+        foreach ($data_user_selected  as $value) {
+
+            DB::table('res_reserved_table')
+                ->where('id', $value->table_id) // Use the appropriate condition
+                ->update([
+                    'updated_on' => now(),
+                    'status' => 'cancelled',
+                ]);
+        }
+
+
+        return redirect()->route('admin.reservationlist');
     }
 }

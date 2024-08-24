@@ -28,7 +28,7 @@ class Emailverification extends Mailable
     {
         $this->data = $data;
         $this->url = URL::temporarySignedRoute(
-            'verify-email',
+            'verifyemailres',
             now()->addMinutes(5),
             ['token' => $encryptedKey]
         );

@@ -4,11 +4,9 @@
     Dear <?php echo e($data['name']); ?>,
 
     Please click the button below to verify your email address.
-
-
-
-    <?php $__env->startComponent('mail::button', ['url' => $url]); ?>
-        Verify Email Address
+   
+    <?php $__env->startComponent('mail::button2', ['url' => $url]); ?>
+        Clik here to Verify Email Address
     <?php echo $__env->renderComponent(); ?>
 
 

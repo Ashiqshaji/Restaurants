@@ -4,11 +4,9 @@
     Dear {{ $data['name'] }},
 
     Please click the button below to verify your email address.
-
-
-
-    @component('mail::button', ['url' => $url])
-        Verify Email Address
+   
+    @component('mail::button2', ['url' => $url])
+        Clik here to Verify Email Address
     @endcomponent
 
 

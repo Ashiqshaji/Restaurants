@@ -1,3 +1,42 @@
+{{-- <!-- Modal HTML -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header"
+                style="
+            display: flex;
+           
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        ">
+                <h5 class="modal-title" id="cancelModalLabel" style=" color: #dc3545;">Cancel Table</h5>
+
+            </div>
+            <div class="modal-body" style="
+            text-align: center;
+            color: black;
+        ">
+                <div class="message1">
+                    <p>Are you sure you want to cancel this table?</p>
+                </div>
+
+                <div class="message">
+                    <form id="cancelForm" method="get">
+                        @csrf
+
+                        <input type="hidden" name="table_id" id="modalTableId" value="">
+                        <button type="submit" class="btn btn-danger">Cancel Table</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+
+
 <script>
     // document.addEventListener('DOMContentLoaded', function() {
 
@@ -234,7 +273,30 @@
                 }
             });
         });
+
+
+
     });
+
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     // Attach event listener to links with class 'cancel-link'
+    //     document.querySelectorAll('.cancel-link').forEach(function(link) {
+    //         link.addEventListener('click', function(event) {
+    //             event.preventDefault(); // Prevent the default link behavior
+
+    //             // Extract the table ID from the link's data attributes
+    //             var tableId = this.dataset.tableId;
+
+    //             // Set the form action URL and the table ID in the modal
+    //             document.getElementById('cancelForm').action = this.href;
+    //             document.getElementById('modalTableId').value = tableId;
+
+    //             // Show the modal
+    //             $('#cancelModal').modal('show');
+    //         });
+    //     });
+    // });
 
 
 

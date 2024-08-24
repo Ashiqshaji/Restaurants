@@ -6,7 +6,12 @@
 
         <div class="row gap-2 ">
 
-
+            <div id="preloader1" style="display: none;">
+                <!-- Your preloader content, e.g., spinner -->
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
             <?php $__currentLoopData = $isNulltable; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $table_list_null1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-12">
 
@@ -243,8 +248,13 @@
 
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Check In </a></li>
-                                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="<?php echo e(route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull2->table_id)])); ?>">Check
+                                                                In </a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="<?php echo e(route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull2->table_id)])); ?>">Cancel</a>
+                                                        </li>
+                                                        
                                                         <li><a class="dropdown-item"
                                                                 href="<?php echo e(route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull2->table_id)])); ?>">Edit
                                                                 Table</a></li>

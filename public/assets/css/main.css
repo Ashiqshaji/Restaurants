@@ -1379,7 +1379,10 @@ button#RemoveButton {
   overflow-y: scroll;
   scrollbar-width: thin;
 } */
-
+#cancelModal button.btn.btn-danger {
+  background-color: #cb982b;
+  --bs-btn-border-color: #cb982b;
+}
 @media (max-width: 576px) {
   #list-box-table-button button.btn.btn-outline-secondary {
       font-size: 0px;

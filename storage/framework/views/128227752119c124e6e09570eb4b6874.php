@@ -148,11 +148,11 @@
                                                                     <?php if($nullTableIdCount && $nullTableIdCount): ?>
                                                                         <div class="col-6"
                                                                             style="display: flex;align-items: center;justify-content: space-evenly;"
-                                                                            data-bs-toggle="tooltip"
-                                                                            title="UnAssigned Table" class="custom-tooltip">
+                                                                            data-bs-toggle="tooltip" title="Un Booked Table"
+                                                                            class="custom-tooltip">
 
                                                                             <div class="icontimeslot">
-                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_1.png')); ?>"
+                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
@@ -166,10 +166,10 @@
 
                                                                         <div class="col-6"
                                                                             style="display: flex;align-items: center;justify-content: space-evenly; "
-                                                                            data-bs-toggle="tooltip" title="Assigned Table"
+                                                                            data-bs-toggle="tooltip" title="Booked Table"
                                                                             class="custom-tooltip">
                                                                             <div class="icontimeslot">
-                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_2.png')); ?>"
+                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
@@ -185,11 +185,11 @@
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly;"
                                                                                 data-bs-toggle="tooltip"
-                                                                                title="Un Assigned Table"
+                                                                                title="Un Booked Table"
                                                                                 class="custom-tooltip">
 
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_1.png')); ?>"
+                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
@@ -205,10 +205,9 @@
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly; "
                                                                                 data-bs-toggle="tooltip"
-                                                                                title="Assigned Table"
-                                                                                class="custom-tooltip">
+                                                                                title="Booked Table" class="custom-tooltip">
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_2.png')); ?>"
+                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
@@ -253,10 +252,7 @@
                                     </div>
                                 </div>
                                 <div class="col-2"
-                                    style="
-                                display: flex;
-                                flex-direction: row-reverse;
-                            ">
+                                    style="display: flex; flex-direction: row-reverse;     margin-top: -7px; ">
                                     <div class="listofreservation">
                                         <a href="<?php echo e(route('admin.addreservation')); ?>">
                                             <i class="bi bi-plus-square" data-bs-toggle="tooltip"
@@ -288,7 +284,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                            id="inputMobile" placeholder="Mobile" name="Mobile"
+                                            id="inputMobile" placeholder="Mobile or Name" name="Mobile"
                                             value="<?php echo e(old('Mobile')); ?>">
                                     </div>
 
@@ -309,8 +305,15 @@ unset($__errorArgs, $__bag); ?>"
 
 
 
+
                                 <div id="list_date_reservation" class="card">
                                     <div class="card-body" style="overflow: auto;">
+
+                                        <div id="preloader1" style="display: none;">
+                                            <div class="spinner-border" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
                                         <div class="row gap-2 ">
 
 
@@ -592,11 +595,12 @@ unset($__errorArgs, $__bag); ?>"
                                                                                     </button>
                                                                                     <ul class="dropdown-menu">
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="#">Check In
+                                                                                                href="<?php echo e(route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Check
+                                                                                                In
                                                                                             </a></li>
-                                                                                        <li><a class="dropdown-item"
-                                                                                                href="#">Cancel</a>
-                                                                                        </li>
+
+                                                                                        
+                                                                                        
                                                                                         <li><a class="dropdown-item"
                                                                                                 href="<?php echo e(route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Edit
                                                                                                 Table</a></li>

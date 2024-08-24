@@ -56,7 +56,7 @@
                                                 style="display: flex;align-items: center;justify-content: space-evenly;">
 
                                                 <div class="icontimeslot">
-                                                    <img src="{{ URL::to('assets/img/Ellipse_1.png') }}" alt=""
+                                                    <img src="{{ URL::to('assets/img/Ellipse_3.png') }}" alt=""
                                                         style="height: 15px;">
                                                 </div>
                                                 <div class="icontimeslot_size" style="font-size: 15px; color:#288e70">
@@ -69,7 +69,7 @@
                                             <div class="col-6"
                                                 style="display: flex;align-items: center;justify-content: space-evenly; ">
                                                 <div class="icontimeslot">
-                                                    <img src="{{ URL::to('assets/img/Ellipse_2.png') }}" alt=""
+                                                    <img src="{{ URL::to('assets/img/Ellipse_4.png') }}" alt=""
                                                         style="height: 15px;">
                                                 </div>
                                                 <div class="icontimeslot_size" style="font-size: 15px ;">
@@ -84,7 +84,7 @@
                                                     style="display: flex;align-items: center;justify-content: space-evenly;">
 
                                                     <div class="icontimeslot">
-                                                        <img src="{{ URL::to('assets/img/Ellipse_1.png') }}"
+                                                        <img src="{{ URL::to('assets/img/Ellipse_3.png') }}"
                                                             alt="" style="height: 15px;">
                                                     </div>
                                                     <div class="icontimeslot_size"
@@ -98,7 +98,7 @@
                                                 <div class="col-12"
                                                     style="display: flex;align-items: center;justify-content: space-evenly; ">
                                                     <div class="icontimeslot">
-                                                        <img src="{{ URL::to('assets/img/Ellipse_2.png') }}"
+                                                        <img src="{{ URL::to('assets/img/Ellipse_4.png') }}"
                                                             alt="" style="height: 15px;">
                                                     </div>
                                                     <div class="icontimeslot_size" style="font-size: 15px ;">

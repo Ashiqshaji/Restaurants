@@ -248,8 +248,17 @@
 
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">Check In </a></li>
-                                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}">Check
+                                                                In </a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}">Cancel</a>
+                                                        </li>
+                                                        {{-- <a class="dropdown-item cancel-link"
+           href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}"
+           data-table-id="{{ $table_list_notnull->table_id }}">
+           Cancel
+        </a> --}}
                                                         <li><a class="dropdown-item"
                                                                 href="{{ route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}">Edit
                                                                 Table</a></li>
