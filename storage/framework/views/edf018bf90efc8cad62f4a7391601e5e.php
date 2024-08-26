@@ -2,7 +2,6 @@
     # QUINCE Booking confirmation
 
 
-    QUINCE BOOKING CONFIRMATION
 
     Dear <?php echo e($data['Name']); ?>,
 

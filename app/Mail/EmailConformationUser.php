@@ -12,12 +12,13 @@ use Illuminate\Queue\SerializesModels;
 class EmailConformationUser extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $data;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($data)
     {
+        $this->data = $data;
         //
     }
 
@@ -43,9 +44,9 @@ class EmailConformationUser extends Mailable
 
     public function build()
     {
-        return $this->markdown('Email.verificationmail')
+        return $this->markdown('Email.confrmationnew')
             ->with([
-                // 'data' => $this->data,
+                'data' => $this->data,
                 // 'url' => $this->url
             ]);
     }

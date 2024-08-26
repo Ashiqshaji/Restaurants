@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailConformationUser;
 use Illuminate\Support\Facades\Redirect;
 
 use Illuminate\Http\Request;
@@ -271,8 +272,11 @@ class HomeController extends Controller
 
 
             $this->sendEmail($emailstatus);
+            $this->sendEmailuser($cuskey, $request->guests, $reservation_time,  $request->reservation_date);
+
             return response()->json(['status' => $emailstatus]);
         } else {
+            $this->sendEmailuser($cuskey, $request->guests, $reservation_time,  $request->reservation_date);
             return response()->json(['status' => $emailstatus]);
         }
     }
@@ -309,6 +313,39 @@ class HomeController extends Controller
             return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
         }
     }
+    public function sendEmailUser($cuskey, $guests, $reservation_time, $reservation_date)
+    {
+        $data_user_name = DB::table('mst_customer_supplier as cus')
+            ->select('cus.customer_name', 'cus.mobile_no', 'cus.email')
+            ->where('cus.cus_key', $cuskey)
+            ->first();
+
+        if (!$data_user_name) {
+            return response()->json(['error' => 'Customer not found'], 404);
+        }
+
+        try {
+            $data = [
+                'Name' => $data_user_name->customer_name,
+                'Date' => $reservation_date,
+                'Time' => $reservation_time,
+                'People' => $guests,
+                'message' => 'New Booking',
+            ];
+
+            Mail::to('ashiqshaji072024@gmail.com')->queue(new EmailConformationUser($data));
+
+            return response()->json(['success' => 'Email sent successfully'], 200);
+        } catch (\Exception $e) {
+            // You can also log the exception here for debugging purposes
+            // Log::error('Failed to send email: ' . $e->getMessage());
+
+            return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+
 
     // public function sendEmail()
     // {

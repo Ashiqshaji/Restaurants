@@ -3,7 +3,7 @@
 
  <div class="col-12">
     <div class="row">
-        <?php $__currentLoopData = $mergedResults; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $results): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $matchedReservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $results): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
                 $colorClass = $results->reservationData_color == 'Yes' ? 'bg-data-color' : '';
                 $isSelectable = $results->reservationData_color != 'Yes';
