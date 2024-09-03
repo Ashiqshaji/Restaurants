@@ -903,4 +903,15 @@ class AdminController extends Controller
 
         return redirect()->route('admin.reservationlist');
     }
+    public function autocompleteMobile(Request $request)
+    {
+        $term = $request->input('term');
+        $mobiles = DB::table('mst_customer_supplier')
+            ->where('mobile_no', 'LIKE', '%' . $term . '%')
+            ->select('mobile_no', 'customer_name', 'email')
+            ->get();
+
+        // Ensure the response is an array of objects
+        return response()->json($mobiles);
+    }
 }

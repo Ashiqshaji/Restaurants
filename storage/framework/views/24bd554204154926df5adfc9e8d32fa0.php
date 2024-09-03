@@ -421,4 +421,4 @@ unset($__errorArgs, $__bag); ?>
     
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('Admin.layout.index', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Restaurants\resources\views\Admin\Reservation\add_reservation.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin.layout.index', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Restaurants\resources\views/Admin/Reservation/add_reservation.blade.php ENDPATH**/ ?>

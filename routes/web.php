@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/Checkin/{id}', [AdminController::class, 'checkin'])->name('admin.checkin');
     Route::get('/Canceldtable/{id}', [AdminController::class, 'canceldtable'])->name('admin.canceldtable');
+
+    Route::get('/autocomplete-mobile', [AdminController::class, 'autocompleteMobile'])->name('autocomplete.mobile');
 });
 
 

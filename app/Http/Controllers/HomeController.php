@@ -333,7 +333,12 @@ class HomeController extends Controller
                 'message' => 'New Booking',
             ];
 
-            Mail::to('ashiqshaji072024@gmail.com')->queue(new EmailConformationUser($data));
+            $data_admin_emails = DB::table('users')->select('email')->get();
+
+            foreach ($data_admin_emails as $admin_email) {
+                Mail::to($admin_email->email)->queue(new EmailConformationUser($data));
+            }
+
 
             return response()->json(['success' => 'Email sent successfully'], 200);
         } catch (\Exception $e) {

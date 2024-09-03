@@ -203,4 +203,4 @@
 </body>
 
 </html>
-<?php /**PATH C:\xampp\htdocs\Restaurants\resources\views\Admin\layout\index.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\Restaurants\resources\views/Admin/layout/index.blade.php ENDPATH**/ ?>

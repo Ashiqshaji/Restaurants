@@ -41,21 +41,13 @@
       <div class="row">
         
         <div class="col-12 d-flex align-items-center" style="display: flex;justify-content: space-around;">
-          <a href="index.html" class="logo d-flex ">
+          <a href="#" class="logo d-flex ">
             <img src="<?php echo e(URL::to('assets/img/Quince-brand.png')); ?>" alt="">
             <!-- <h1 class="sitename">Quince</h1> -->
           </a>
         </div>
 
       </div>
-
-
-
-
-
-
-
-
 
 
     </div>
