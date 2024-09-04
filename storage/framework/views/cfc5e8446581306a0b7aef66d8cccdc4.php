@@ -1,6 +1,4 @@
-@extends('Admin.layout.index')
-
-@Section('content')
+<?php $__env->startSection('content'); ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Custom tooltip style */
@@ -34,25 +32,25 @@
                             <div class="Date_display">
                                 <div class="card">
                                     <div class="card-body">
-                                        @php
+                                        <?php
                                             use Carbon\Carbon;
                                             $currentDateTime = Carbon::now();
-                                        @endphp
+                                        ?>
 
                                         <div class="row g-x-5">
                                             <div class="col-9">
                                                 <div class="row">
                                                     <div class="col-12 col-sm-12  mb-1">
                                                         <div class="date_header">
-                                                            <h6 class="mb-0"> {{ $date->format('l') }}</h6>
+                                                            <h6 class="mb-0"> <?php echo e($date->format('l')); ?></h6>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-sm-12">
 
                                                         <input type="hidden" id='page_date' name="page_date"
-                                                            value={{ $date->format('d-m-Y') }}>
+                                                            value=<?php echo e($date->format('d-m-Y')); ?>>
                                                         <div class="date_date">
-                                                            <h5 class="mb-0">{{ $date->format('M d, Y') }}</h5>
+                                                            <h5 class="mb-0"><?php echo e($date->format('M d, Y')); ?></h5>
 
                                                         </div>
 
@@ -82,81 +80,21 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            {{-- <div class="list_reservation_table">
-                                <div class="row text-center">
-                                    @for ($i = 0; $i <= 7 * 2 + 1; $i++)
-                                        @php
-                                            $time = \Carbon\Carbon::createFromTime(8, 0)->addMinutes($i * 60);
-                                            $timeStr = $time->format('h:i A'); // 12-hour format
-                                            $buttonId = 'btn-' . $time->format('Hi');
-                                            $timecheck = $time->format('H:i');
-                                        @endphp
-
-                                        <div class="col-6 col-sm-4 col-md-3 p-1">
-                                            <div class="card time-slot-card" id="{{ $buttonId }}"
-                                                data-time="{{ $time->format('H:i') }}">
-                                                <div class="card-body">
-                                                    <div class="time">
-                                                        <span class="display_time">{{ $time->format('h:i A') }}</span>
-                                                    </div>
-                                                    <div class="booking_header">
-                                                        BOOKINGS
-                                                    </div>
-                                                    <div class="booking_number">
-                                                        @php
-                                                            $reservationCount = 0;
-                                                        @endphp
-
-                                                        @foreach ($groupedReservations as $key => $reservation)
-                                                            @php
-                                                                try {
-                                                                    // Ensure $timecheck and $key are in 'H:i' format
-                                                                    $time1 = \Carbon\Carbon::createFromFormat(
-                                                                        'H:i',
-                                                                        $timecheck,
-                                                                    );
-                                                                    $time2 = \Carbon\Carbon::createFromFormat(
-                                                                        'H:i',
-                                                                        $key,
-                                                                    );
-
-                                                                    // Compare the two times
-                                                                    $areTimesSame = $time1->eq($time2);
-                                                                } catch (\Carbon\Exceptions\InvalidFormatException $e) {
-                                                                    // Handle the exception if the format is incorrect
-                                                                    $areTimesSame = false;
-                                                                }
-                                                            @endphp
-
-                                                            @if ($areTimesSame)
-                                                                @php
-                                                                    $reservationCount = $reservation->count;
-                                                                @endphp
-                                                            @endif
-                                                        @endforeach
-
-                                                        {{ $reservationCount }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endfor
-                                </div>
-                            </div> --}}
+                            
 
                             <div class="list_reservation_table" style="padding: 20px 20px !important">
                                 <div class="row text-center">
-                                    @for ($i = 0; $i <= 7 * 2 + 1; $i++)
-                                        @php
+                                    <?php for($i = 0; $i <= 7 * 2 + 1; $i++): ?>
+                                        <?php
                                             $time = \Carbon\Carbon::createFromTime(8, 0)->addMinutes($i * 60);
                                             $timeStr = $time->format('h:i A'); // 12-hour format
                                             $buttonId = 'btn-' . $time->format('Hi');
                                             $timecheck = $time->format('H:i');
-                                        @endphp
+                                        ?>
 
                                         <div class="col-6 col-sm-4 col-md-3 p-1">
-                                            <div class="card time-slot-card" id="{{ $buttonId }}"
-                                                data-time="{{ $time->format('H:i') }}"
+                                            <div class="card time-slot-card" id="<?php echo e($buttonId); ?>"
+                                                data-time="<?php echo e($time->format('H:i')); ?>"
                                                 style="
                                                 height: 115px;
                                             ">
@@ -165,7 +103,7 @@
                                                         <div class="col-12">
                                                             <div class="time">
                                                                 <span
-                                                                    class="display_time">{{ $time->format('h:i A') }}</span>
+                                                                    class="display_time"><?php echo e($time->format('h:i A')); ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -175,13 +113,13 @@
                                                         </div>
                                                         <div class="col-12">
                                                             <div class="booking_number">
-                                                                @php
+                                                                <?php
                                                                     $nullTableIdCount = 0;
                                                                     $notNullTableIdCount = 0;
-                                                                @endphp
+                                                                ?>
 
-                                                                @foreach ($groupedReservations as $key => $reservation)
-                                                                    @php
+                                                                <?php $__currentLoopData = $groupedReservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <?php
                                                                         try {
                                                                             $time1 = \Carbon\Carbon::createFromFormat(
                                                                                 'H:i',
@@ -195,31 +133,32 @@
                                                                         } catch (\Carbon\Exceptions\InvalidFormatException $e) {
                                                                             $areTimesSame = false;
                                                                         }
-                                                                    @endphp
+                                                                    ?>
 
-                                                                    @if ($areTimesSame)
-                                                                        @php
+                                                                    <?php if($areTimesSame): ?>
+                                                                        <?php
                                                                             $nullTableIdCount =
                                                                                 $reservation['null_tableid_count'];
                                                                             $notNullTableIdCount =
                                                                                 $reservation['not_null_tableid_count'];
-                                                                        @endphp
-                                                                    @endif
-                                                                @endforeach
+                                                                        ?>
+                                                                    <?php endif; ?>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 <div class="row mt-1">
-                                                                    @if ($nullTableIdCount && $nullTableIdCount)
+                                                                    <?php if($nullTableIdCount && $nullTableIdCount): ?>
                                                                         <div class="col-6"
                                                                             style="display: flex;align-items: center;justify-content: space-evenly;"
                                                                             data-bs-toggle="tooltip" title="Un Booked Table"
                                                                             class="custom-tooltip">
 
                                                                             <div class="icontimeslot">
-                                                                                <img src="{{ URL::to('assets/img/Ellipse_3.png') }}"
+                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
                                                                                 style="font-size: 15px; color:#288e70">
-                                                                                {{ $nullTableIdCount }}
+                                                                                <?php echo e($nullTableIdCount); ?>
+
                                                                             </div>
 
                                                                         </div>
@@ -230,18 +169,19 @@
                                                                             data-bs-toggle="tooltip" title="Booked Table"
                                                                             class="custom-tooltip">
                                                                             <div class="icontimeslot">
-                                                                                <img src="{{ URL::to('assets/img/Ellipse_4.png') }}"
+                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
                                                                                     alt="" style="height: 15px;">
                                                                             </div>
                                                                             <div class="icontimeslot_size"
                                                                                 style="font-size: 15px ;">
-                                                                                {{ $notNullTableIdCount }}
+                                                                                <?php echo e($notNullTableIdCount); ?>
+
                                                                             </div>
 
 
                                                                         </div>
-                                                                    @else
-                                                                        @if ($nullTableIdCount)
+                                                                    <?php else: ?>
+                                                                        <?php if($nullTableIdCount): ?>
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly;"
                                                                                 data-bs-toggle="tooltip"
@@ -249,36 +189,38 @@
                                                                                 class="custom-tooltip">
 
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="{{ URL::to('assets/img/Ellipse_3.png') }}"
+                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
                                                                                 <div class="icontimeslot_size"
                                                                                     style="font-size: 15px; color:#288e70">
-                                                                                    {{ $nullTableIdCount }}
+                                                                                    <?php echo e($nullTableIdCount); ?>
+
                                                                                 </div>
 
                                                                             </div>
-                                                                        @endif
-                                                                        @if ($notNullTableIdCount)
+                                                                        <?php endif; ?>
+                                                                        <?php if($notNullTableIdCount): ?>
                                                                             <div class="col-12"
                                                                                 style="display: flex;align-items: center;justify-content: space-evenly; "
                                                                                 data-bs-toggle="tooltip"
                                                                                 title="Booked Table" class="custom-tooltip">
                                                                                 <div class="icontimeslot">
-                                                                                    <img src="{{ URL::to('assets/img/Ellipse_4.png') }}"
+                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
                                                                                         alt=""
                                                                                         style="height: 15px;">
                                                                                 </div>
                                                                                 <div class="icontimeslot_size"
                                                                                     style="font-size: 15px ;">
-                                                                                    {{ $notNullTableIdCount }}
+                                                                                    <?php echo e($notNullTableIdCount); ?>
+
                                                                                 </div>
 
 
                                                                             </div>
-                                                                        @endif
-                                                                    @endif
+                                                                        <?php endif; ?>
+                                                                    <?php endif; ?>
 
 
                                                                 </div>
@@ -290,7 +232,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endfor
+                                    <?php endfor; ?>
                                 </div>
                             </div>
 
@@ -312,7 +254,7 @@
                                 <div class="col-2"
                                     style="display: flex; flex-direction: row-reverse;     margin-top: -7px; ">
                                     <div class="listofreservation">
-                                        <a href="{{ route('admin.addreservation') }}">
+                                        <a href="<?php echo e(route('admin.addreservation')); ?>">
                                             <i class="bi bi-plus-square" data-bs-toggle="tooltip"
                                                 title="Add New Rerservation" class="custom-tooltip"></i>
 
@@ -334,9 +276,16 @@
                                 flex-direction: row-reverse;
                             ">
                                     <div class="search_mobile">
-                                        <input type="text" class="form-control @error('Mobile') is-invalid @enderror"
+                                        <input type="text" class="form-control <?php $__errorArgs = ['Mobile'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                             id="inputMobile" placeholder="Mobile or Name" name="Mobile"
-                                            value="{{ old('Mobile') }}">
+                                            value="<?php echo e(old('Mobile')); ?>">
                                     </div>
 
                                 </div>
@@ -349,47 +298,10 @@
                             <div class="list_reservation_table_details">
 
 
-                                {{-- <div class="table-container">
-                                    <div class="table-row">
-                                        <div class="table-data">
-                                            <span><i class="bi bi-person-fill"></i></span>
-                                            <span>Christopher</span>
-                                            <span>052-254-8877</span>
-                                            <span>chris@gmail.com</span>
-                                        </div>
-                                        <div class="table-data">
-                                            <span><i class="bi bi-people-fill"></i></span>
-                                            <span>2</span>
-                                        </div>
-                                        <div class="table-actions">
-                                            <span><i class="bi bi-table"></i></span>
-                                            <button class="assign-table">Assign Table</button>
-                                        </div>
-                                    </div>
-                                    <div class="table-row">
-                                        <div class="table-data">
-                                            <span><i class="bi bi-person-fill"></i></span>
-                                            <span>Laura</span>
-                                            <span>052-222-4477</span>
-                                            <span>laura@gmail.com</span>
-                                        </div>
-                                        <div class="table-data">
-                                            <span><i class="bi bi-people-fill"></i></span>
-                                            <span>2</span>
-                                        </div>
-                                        <div class="table-actions">
-                                            <span><i class="bi bi-table"></i></span>
-                                            <span>Table 1</span>
-                                            <button class="edit-table"><i class="bi bi-pencil-fill"></i></button>
-                                        </div>
-                                    </div>
-                                </div> --}}
+                                
 
 
-                                {{-- @php
-                                    print_r($isNulltable);
-
-                                @endphp --}}
+                                
 
 
 
@@ -406,7 +318,7 @@
 
 
 
-                                            @foreach ($isNulltable as $table_list_null)
+                                            <?php $__currentLoopData = $isNulltable; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $table_list_null): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <div class="col-12">
 
                                                     <div class="table_list_box ">
@@ -422,11 +334,11 @@
 
                                                                     <div class="list-box-details">
                                                                         <div class="list-box-details-name">
-                                                                            <span>{{ ucwords($table_list_null->customer_name) }}</span>
+                                                                            <span><?php echo e(ucwords($table_list_null->customer_name)); ?></span>
                                                                         </div>
                                                                         <div class="list-box-details-number">
 
-                                                                            @php
+                                                                            <?php
 
                                                                                 $formattedMobileNo =
                                                                                     substr(
@@ -445,14 +357,14 @@
                                                                                         $table_list_null->mobile_no,
                                                                                         6,
                                                                                     );
-                                                                            @endphp
+                                                                            ?>
 
-                                                                            <span>{{ $formattedMobileNo }}</span>
+                                                                            <span><?php echo e($formattedMobileNo); ?></span>
 
-                                                                            {{-- <span>{{ $table_list_null->mobile_no }}</span> --}}
+                                                                            
                                                                         </div>
                                                                         <div class="list-box-details-email">
-                                                                            <span>{{ $table_list_null->email }}<span>
+                                                                            <span><?php echo e($table_list_null->email); ?><span>
                                                                         </div>
                                                                     </div>
 
@@ -473,7 +385,7 @@
                                                                             </svg>
                                                                         </div>
                                                                         <div class="list-box-number-count">
-                                                                            <p>{{ $table_list_null->no_of_people }}</p>
+                                                                            <p><?php echo e($table_list_null->no_of_people); ?></p>
                                                                         </div>
 
 
@@ -514,7 +426,7 @@
                                                                         <div id="list-box-table-button"
                                                                             class="list-box-table-button">
                                                                             <a
-                                                                                href="{{ route('admin.assigntable', ['id' => Crypt::encrypt($table_list_null->table_id)]) }}">
+                                                                                href="<?php echo e(route('admin.assigntable', ['id' => Crypt::encrypt($table_list_null->table_id)])); ?>">
 
                                                                                 <button type="button"
                                                                                     class="btn btn-outline-secondary"> <svg
@@ -543,9 +455,9 @@
 
 
                                                 </div>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                            @foreach ($notNulltable as $table_list_notnull)
+                                            <?php $__currentLoopData = $notNulltable; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $table_list_notnull): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <div class="col-12">
 
                                                     <div class="table_list_box ">
@@ -560,11 +472,11 @@
 
                                                                     <div class="list-box-details">
                                                                         <div class="list-box-details-name">
-                                                                            <span>{{ ucwords($table_list_notnull->customer_name) }}</span>
+                                                                            <span><?php echo e(ucwords($table_list_notnull->customer_name)); ?></span>
                                                                         </div>
                                                                         <div class="list-box-details-number">
 
-                                                                            @php
+                                                                            <?php
 
                                                                                 $formattedMobileNo =
                                                                                     substr(
@@ -583,14 +495,14 @@
                                                                                         $table_list_notnull->mobile_no,
                                                                                         6,
                                                                                     );
-                                                                            @endphp
+                                                                            ?>
 
-                                                                            <span>{{ $formattedMobileNo }}</span>
+                                                                            <span><?php echo e($formattedMobileNo); ?></span>
 
-                                                                            {{-- <span>{{ $table_list_null->mobile_no }}</span> --}}
+                                                                            
                                                                         </div>
                                                                         <div class="list-box-details-email">
-                                                                            <span>{{ $table_list_notnull->email }}<span>
+                                                                            <span><?php echo e($table_list_notnull->email); ?><span>
                                                                         </div>
                                                                     </div>
 
@@ -611,7 +523,7 @@
                                                                             </svg>
                                                                         </div>
                                                                         <div class="list-box-number-count">
-                                                                            <p>{{ $table_list_notnull->no_of_people }}</p>
+                                                                            <p><?php echo e($table_list_notnull->no_of_people); ?></p>
                                                                         </div>
 
 
@@ -661,7 +573,7 @@
                                                                                 style="
                                                                             padding: 0px 5px;
                                                                         ">
-                                                                                <span>{{ $table_list_notnull->table_no }}</span>
+                                                                                <span><?php echo e($table_list_notnull->table_no); ?></span>
 
 
                                                                             </div>
@@ -683,20 +595,16 @@
                                                                                     </button>
                                                                                     <ul class="dropdown-menu">
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="{{ route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Check
+                                                                                                href="<?php echo e(route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Check
                                                                                                 In
                                                                                             </a></li>
 
                                                                                          <li><a class="dropdown-item"
-                                                                                                href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Cancel</a>
+                                                                                                href="<?php echo e(route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Cancel</a>
                                                                                         </li> 
-                                                                                        {{-- <a class="dropdown-item cancel-link"
-           href="{{ route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}"
-           data-table-id="{{ $table_list_notnull->table_id }}">
-           Cancel
-        </a> --}}
+                                                                                        
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="{{ route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)]) }}">Edit
+                                                                                                href="<?php echo e(route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Edit
                                                                                                 Table</a></li>
                                                                                     </ul>
                                                                                 </div>
@@ -727,7 +635,7 @@
 
 
                                                 </div>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                         </div>
 
@@ -751,18 +659,11 @@
 
     </section>
 
-    {{-- <div class="container mt-5">
-        <div class="input-group">
-            <input type="hidden" class="form-control" placeholder="Select a date">
-            <button class="btn btn-outline-secondary" type="button" id="showCalendar">
-                <i class="bi bi-calendar"></i> <!-- Bootstrap Icons Calendar Icon -->
-            </button>
-        </div>
-    </div> --}}
+    
 
 
 
-    @include('Admin.Reservation.Scriptreservation')
+    <?php echo $__env->make('Admin.Reservation.Scriptreservation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -776,4 +677,6 @@
         });
     </script>
 
-@endSection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('Admin.layout.index', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Restaurants\resources\views/Admin/Reservation/list.blade.php ENDPATH**/ ?>

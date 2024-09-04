@@ -377,7 +377,7 @@ class AdminController extends Controller
             $modifiedText = substr($originalText, 0, $position) . ' ' . substr($originalText, $position);
 
             $data_section = DB::table('sys_floorlayout_designer as fld_tab')
-                ->select('fld_tab.btnSectionID as btnSectionID')
+                ->select('fld_tab.btnSectionID as btnSectionID', 'fld_tab.btnIndex as btnIndex')
                 ->where('fld_tab.btnText', $modifiedText)->first();
 
             if ($i == 0) {
@@ -388,6 +388,7 @@ class AdminController extends Controller
                         'sectionID' => $data_section->btnSectionID, // Use value from request or null
                         'reserved_on' => now(),
                         'status' => 'reserved',
+                        'tableIndex' => $data_section->btnIndex
                     ]);
             } else {
 
@@ -404,6 +405,7 @@ class AdminController extends Controller
                     'reserved_blocks' =>  $reserved_table_list->reserved_blocks,
                     'reserved_by' => 'Admin',
                     'status' => 'reserved',
+                    'tableIndex' => $data_section->btnIndex,
                 ]);
             }
 

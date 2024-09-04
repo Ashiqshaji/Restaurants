@@ -396,7 +396,7 @@ unset($__errorArgs, $__bag); ?>
                             // Transform the response into an array of objects suitable for the autocomplete
                             response($.map(data, function(item) {
                                 return {
-                                    label:'Mobile :' + item.mobile_no + ' - Name :' + item.customer_name,
+                                    label:'[ '+ item.mobile_no + ' ] '+' '+ item.customer_name,
                                     value: item.mobile_no,
                                     name: item.customer_name,
                                     email: item.email

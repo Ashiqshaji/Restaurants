@@ -205,7 +205,7 @@ class HomeController extends Controller
                 'sectionID' => null,
                 'reserved_on' => now(),
                 'reserved_blocks' => $reservation_time,
-                'reserved_by' => 'Admin',
+                'reserved_by' => 'Online',
                 'status' => 'reserved',
             ]);
 
