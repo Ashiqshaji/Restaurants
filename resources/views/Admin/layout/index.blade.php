@@ -48,7 +48,7 @@
 
     <!-- Include jQuery UI for Autocomplete -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  
+
 
 </head>
 
@@ -131,13 +131,6 @@
                             </ul>
                         </div>
 
-
-
-
-
-
-
-
                     </div>
 
 
@@ -147,14 +140,6 @@
 
 
             </div>
-
-
-
-
-
-
-
-
 
 
         </div>
@@ -196,7 +181,7 @@
     </script>
 
     <script src="{{ URL::to('https://cdn.jsdelivr.net/npm/flatpickr') }}"></script>
-    
+
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 </body>

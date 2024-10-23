@@ -1,34 +1,46 @@
-
 :root {
-  --default-font: "Montserrat",  system-ui, -apple-system, "Segoe UI", Montserrat, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heading-font: "Montserrat",  sans-serif;
-  --nav-font: "Inter",  sans-serif;
+  --default-font: "Montserrat", system-ui, -apple-system, "Segoe UI", Montserrat, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Montserrat", sans-serif;
+  --nav-font: "Inter", sans-serif;
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
-  --background-color: #000000; /* Background color for the entire website, including individual sections */
-  --default-color: #ffffff; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #ffffff; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #ffffff; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+:root {
+  --background-color: #000000;
+  /* Background color for the entire website, including individual sections */
+  --default-color: #ffffff;
+  /* Default color used for the majority of the text content across the entire website */
+  --heading-color: #ffffff;
+  /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #ffffff;
+  /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --surface-color: #ffffff;
+  /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --contrast-color: #ffffff;
+  /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #e4e4e4;  /* The default color of the main navmenu links */
-  --nav-hover-color: #e4e4e4; /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #313336; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #77b6ca; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #e4e4e4;
+  /* The default color of the main navmenu links */
+  --nav-hover-color: #e4e4e4;
+  /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff;
+  /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff;
+  /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #313336;
+  /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #77b6ca;
+  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
 .light-background {
-  --background-color: #ffffff;;
+  --background-color: #ffffff;
+  ;
   --surface-color: #ffffff;
 }
 
@@ -163,9 +175,11 @@ h6 {
     font-size: 24px;
   }
 }
+
 input#inputText {
   color: #ca9b27;
 }
+
 .header .btn-getstarted,
 .header .btn-getstarted:focus {
   color: var(--contrast-color);
@@ -750,23 +764,23 @@ section,
 
 #carouselExampleIndicators .btn {
   --bs-btn-padding-x: 0.5rem !important;
-  --bs-btn-padding-y: 0.275rem!important;
+  --bs-btn-padding-y: 0.275rem !important;
 
   --bs-btn-font-size: 0.9rem !important;
-  }
+}
 
-  .carousel-indicators {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    padding: 0;
-    margin-right: 15%;
-    margin-bottom: -1rem !important;
-    margin-left: 15%;
+.carousel-indicators {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-right: 15%;
+  margin-bottom: -1rem !important;
+  margin-left: 15%;
 }
 
 .fc-toolbar-title {
@@ -852,18 +866,18 @@ table.fc-scrollgrid.fc-scrollgrid-liquid {
   color: #a3acb3;
 
 
-    --bs-btn-border-color: #ce972c;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #fcc963;
-    --bs-btn-hover-border-color: #fcc963;
-    --bs-btn-focus-shadow-rgb: 49, 132, 253;
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg:  #ce972c;
-    --bs-btn-active-border-color: : #ce972c;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg:  #ce972c;
-    --bs-btn-disabled-border-color:  #ce972c;
+  --bs-btn-border-color: #ce972c;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #fcc963;
+  --bs-btn-hover-border-color: #fcc963;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #ce972c;
+  --bs-btn-active-border-color: : #ce972c;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #ce972c;
+  --bs-btn-disabled-border-color: #ce972c;
 }
 
 #carouselExampleIndicators a.btn.btn-primary.btn-danger-reser {
@@ -950,9 +964,10 @@ h1#ConfirmModalLabel {
   --bs-btn-disabled-border-color: #0d6efd;
 }
 
-#ConfirmReplayModal  .modal-header {
+#ConfirmReplayModal .modal-header {
   border-bottom: 0px solid red !important;
 }
+
 #ConfirmReplayModal .modal-footer {
   border-top: 0px solid red !important;
   display: flex;
@@ -960,6 +975,7 @@ h1#ConfirmModalLabel {
   align-content: space-between;
   align-items: center;
 }
+
 .ConfirmReplay_data {
   font-weight: 500;
   color: black;
@@ -1017,7 +1033,7 @@ span.display_time {
 
 .booking_number {
   font-weight: 800;
-  font-size: 19px;
+  font-size: 15px;
   color: #df282e;
 }
 
@@ -1028,7 +1044,7 @@ span.display_time {
 
 .list_reservation_table_details {
   padding: 20px 0px;
-  
+
 }
 
 
@@ -1036,7 +1052,7 @@ span.display_time {
   border-radius: 0px;
   border: 1px solid white;
   border-radius: 0px !important;
- 
+
 }
 
 .list_reservation_table_details .card-body {
@@ -1055,22 +1071,22 @@ span.display_time {
 
 @media (max-width: 1200px) {
   span.display_time {
-      font-size: 15px;
+    font-size: 15px;
 
-      font-weight: 700;
+    font-weight: 700;
 
   }
 
   .booking_header {
-      font-size: 13px;
-      font-weight: 500;
-      color: #bfc8c3;
+    font-size: 13px;
+    font-weight: 500;
+    color: #bfc8c3;
   }
 
   .booking_number {
-      font-weight: 800;
-      font-size: 19px;
-      color: #df282e;
+    font-weight: 800;
+    font-size: 15px;
+    color: #df282e;
   }
 }
 
@@ -1332,6 +1348,7 @@ h5#confirmModalLabel {
   background-color: #cb982b;
   border-color: #cb982b;
 }
+
 button#RemoveButton {
   background-color: #cb982b;
   border-color: #cb982b;
@@ -1361,7 +1378,7 @@ button#RemoveButton {
 .btn.show,
 .btn:first-child:active,
 :not(.btn-check)+.btn:active {
-  border-color: white ;
+  border-color: white;
 }
 
 #list_date_reservation .btn:hover {
@@ -1373,6 +1390,7 @@ button#RemoveButton {
   color: #e6e6e6;
   background-color: #ce972c;
 }
+
 /* .scroller {
   width: 300px;
   height: 100px;
@@ -1383,9 +1401,10 @@ button#RemoveButton {
   background-color: #cb982b;
   --bs-btn-border-color: #cb982b;
 }
+
 @media (max-width: 576px) {
   #list-box-table-button button.btn.btn-outline-secondary {
-      font-size: 0px;
+    font-size: 0px;
   }
 
 }
@@ -1393,25 +1412,25 @@ button#RemoveButton {
 
 @media (max-width: 768px) {
   #list-box-table-button button.btn.btn-outline-secondary {
-      font-size: 10px;
+    font-size: 10px;
   }
 }
 
 @media (max-width: 992px) {
   #list-box-table-button button.btn.btn-outline-secondary {
-      font-size: 11px;
+    font-size: 11px;
   }
 }
 
 @media (max-width: 1200px) {
   #list-box-table-button button.btn.btn-outline-secondary {
-      font-size: 9px;
+    font-size: 9px;
   }
 }
 
 
 @media (max-width: 1400px) {
   #list-box-table-button button.btn.btn-outline-secondary {
-      font-size: 12px;
+    font-size: 12px;
   }
 }

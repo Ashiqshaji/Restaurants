@@ -44,15 +44,42 @@ class AdminController extends Controller
         $roundedCurrentTimeStr =  $roundedCurrentTime->format('h:i A');
 
 
+        // $groupedReservations = DB::table('res_reserved_table')
+        //     ->select(
+        //         'reserved_blocks',
+        //         DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
+        //         DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
+        //     )
+        //     ->where('reservation_date', $formattedDate)
+        //     ->groupBy('reserved_blocks')
+        //     ->where('status', 'reserved')
+        //     ->get()
+        //     ->keyBy('reserved_blocks')
+        //     ->mapWithKeys(function ($item, $key) {
+        //         $dateTime = \DateTime::createFromFormat('h:i A', $key);
+        //         $formattedKey = $dateTime ? $dateTime->format('H:i') : $key;
+        //         return [
+        //             $formattedKey => [
+        //                 'null_tableid_count' => $item->null_tableid_count,
+        //                 'not_null_tableid_count' => $item->not_null_tableid_count,
+        //             ]
+        //         ];
+        //     });
+
+        $table_count = $this->tablesection()->count();
         $groupedReservations = DB::table('res_reserved_table')
             ->select(
                 'reserved_blocks',
-                DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
-                DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
+                DB::raw("SUM(CASE WHEN table_no IS NULL  THEN 1 ELSE 0 END) as null_tableid_count"),
+                DB::raw("SUM(CASE WHEN table_no IS NOT NULL AND status = 'reserved' THEN 1 ELSE 0 END) as not_null_tableid_reserved_count"),
+                DB::raw("SUM(CASE WHEN status = 'checkedin' THEN 1 ELSE 0 END) as checked_in_count")
             )
             ->where('reservation_date', $formattedDate)
+            ->where(function ($query) {
+                $query->where('status', 'reserved')
+                    ->orWhere('status', 'checkedin');
+            })
             ->groupBy('reserved_blocks')
-            ->where('status', 'reserved')
             ->get()
             ->keyBy('reserved_blocks')
             ->mapWithKeys(function ($item, $key) {
@@ -61,19 +88,24 @@ class AdminController extends Controller
                 return [
                     $formattedKey => [
                         'null_tableid_count' => $item->null_tableid_count,
-                        'not_null_tableid_count' => $item->not_null_tableid_count,
+                        'not_null_tableid_reserved_count' => $item->not_null_tableid_reserved_count,
+                        'checked_in_count' => $item->checked_in_count,
                     ]
                 ];
             });
 
-        $datalist = DB::table('res_reserved_table as restable')
 
+        $datalist = DB::table('res_reserved_table as restable')
             ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
-            ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id')
+            ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.status as Status')
             ->where('restable.reservation_date', $formattedDate)
             ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
-            ->where('restable.status', 'reserved')
+            ->where(function ($query) {
+                $query->where('restable.status', 'reserved')
+                    ->orWhere('restable.status', 'checkedin');
+            })
             ->get();
+
 
 
 
@@ -85,10 +117,15 @@ class AdminController extends Controller
 
         $notNulltable = $notNulltable->toArray();
         $isNulltable = $isNulltable->toArray();
+        usort($notNulltable, function ($a, $b) {
+            $statusOrder = ['checkedin' => 2, 'reserved' => 1];
+            return $statusOrder[$a->Status] <=> $statusOrder[$b->Status];
+        });
 
 
 
-        return view('Admin.Reservation.list', compact('groupedReservations', 'notNulltable', 'isNulltable', 'date'));
+
+        return view('Admin.Reservation.list', compact('groupedReservations', 'notNulltable', 'isNulltable', 'date', 'table_count'));
     }
 
     public function  each_time_slot(Request $request)
@@ -110,12 +147,14 @@ class AdminController extends Controller
 
 
         $datalist = DB::table('res_reserved_table as restable')
-
             ->join('mst_customer_supplier as cus', 'restable.cus_key', '=', 'cus.cus_key')
-            ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id')
+            ->select('cus.customer_name', 'cus.mobile_no', 'cus.email', 'restable.no_of_people', 'restable.table_no', 'restable.id as table_id', 'restable.status as Status')
             ->where('restable.reservation_date', $formattedDate)
             ->where('restable.reserved_blocks', $roundedCurrentTimeStr)
-            ->where('restable.status', 'reserved')
+            ->where(function ($query) {
+                $query->where('restable.status', 'reserved')
+                    ->orWhere('restable.status', 'checkedin');
+            })
             ->get();
 
 
@@ -126,6 +165,11 @@ class AdminController extends Controller
 
         $notNulltable = $notNulltable->toArray();
         $isNulltable = $isNulltable->toArray();
+        usort($notNulltable, function ($a, $b) {
+            $statusOrder = ['checkedin' => 2, 'reserved' => 1];
+            return $statusOrder[$a->Status] <=> $statusOrder[$b->Status];
+        });
+
 
         return view('Admin.Reservation.Partials.list', compact('notNulltable', 'isNulltable'));
     }
@@ -506,7 +550,6 @@ class AdminController extends Controller
             ->where('restable.reservation_date', $data_user->reservation_date)
             ->where('restable.reserved_blocks', $data_user->reserved_blocks)
             ->where('restable.status', 'reserved')
-
             ->get();
 
 
@@ -612,14 +655,41 @@ class AdminController extends Controller
         //     return [$formattedKey => $item];
         // });
 
+        // $groupedReservations = DB::table('res_reserved_table')
+        //     ->select(
+        //         'reserved_blocks',
+        //         DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
+        //         DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
+        //     )
+        //     ->where('reservation_date', $formattedDate)
+        //     ->where('status', 'reserved')
+        //     ->groupBy('reserved_blocks')
+        //     ->get()
+        //     ->keyBy('reserved_blocks')
+        //     ->mapWithKeys(function ($item, $key) {
+        //         $dateTime = \DateTime::createFromFormat('h:i A', $key);
+        //         $formattedKey = $dateTime ? $dateTime->format('H:i') : $key;
+        //         return [
+        //             $formattedKey => [
+        //                 'null_tableid_count' => $item->null_tableid_count,
+        //                 'not_null_tableid_count' => $item->not_null_tableid_count,
+        //             ]
+        //         ];
+        //     });
+
+        $table_count = $this->tablesection()->count();
         $groupedReservations = DB::table('res_reserved_table')
             ->select(
                 'reserved_blocks',
-                DB::raw('SUM(CASE WHEN table_no IS NULL THEN 1 ELSE 0 END) as null_tableid_count'),
-                DB::raw('SUM(CASE WHEN table_no IS NOT NULL THEN 1 ELSE 0 END) as not_null_tableid_count')
+                DB::raw("SUM(CASE WHEN table_no IS NULL  THEN 1 ELSE 0 END) as null_tableid_count"),
+                DB::raw("SUM(CASE WHEN table_no IS NOT NULL AND status = 'reserved' THEN 1 ELSE 0 END) as not_null_tableid_reserved_count"),
+                DB::raw("SUM(CASE WHEN status = 'checkedin' THEN 1 ELSE 0 END) as checked_in_count")
             )
             ->where('reservation_date', $formattedDate)
-            ->where('status', 'reserved')
+            ->where(function ($query) {
+                $query->where('status', 'reserved')
+                    ->orWhere('status', 'checkedin');
+            })
             ->groupBy('reserved_blocks')
             ->get()
             ->keyBy('reserved_blocks')
@@ -629,7 +699,8 @@ class AdminController extends Controller
                 return [
                     $formattedKey => [
                         'null_tableid_count' => $item->null_tableid_count,
-                        'not_null_tableid_count' => $item->not_null_tableid_count,
+                        'not_null_tableid_reserved_count' => $item->not_null_tableid_reserved_count,
+                        'checked_in_count' => $item->checked_in_count,
                     ]
                 ];
             });
@@ -637,7 +708,7 @@ class AdminController extends Controller
 
 
 
-        return view('Admin.Reservation.partials.timeslot',  ['groupedReservations' => $groupedReservations])->render();
+        return view('Admin.Reservation.partials.timeslot',  ['groupedReservations' => $groupedReservations, 'table_count' => $table_count])->render();
     }
 
     public function addnewreservation(Request $request)
@@ -915,5 +986,10 @@ class AdminController extends Controller
 
         // Ensure the response is an array of objects
         return response()->json($mobiles);
+    }
+
+    public function dashboard() {
+
+        return view('Admin.layout.dashboard');
     }
 }

@@ -15,8 +15,36 @@
         }
 
         .search_mobile {
-            width: 50%;
+            width: 100%;
             margin: 10px 0px;
+        }
+
+        .border-red {
+            border: 2px solid #d44a47;
+        }
+
+        .border-green {
+            border: 2px solid #288e70;
+        }
+
+        .ribbon-2 {
+            --f: 5px;
+            /* control the folded part*/
+            --r: 10px;
+            /* control the ribbon shape */
+            --t: 5px;
+            /* the top offset */
+
+            position: absolute;
+            inset: var(--t) calc(-1*var(--f)) auto auto;
+            padding: 0 5px var(--f) calc(5px + var(--r));
+            clip-path:
+                polygon(0 0, 100% 0, 100% calc(100% - var(--f)), calc(100% - var(--f)) 100%,
+                    calc(100% - var(--f)) calc(100% - var(--f)), 0 calc(100% - var(--f)),
+                    var(--r) calc(50% - var(--f)/2));
+
+            border-color: #BD1550;
+            box-shadow: 0 calc(-1*var(--f)) 0 inset #0005;
         }
     </style>
 
@@ -83,6 +111,8 @@
                             
 
                             <div class="list_reservation_table" style="padding: 20px 20px !important">
+                                
+
                                 <div class="row text-center">
                                     <?php for($i = 0; $i <= 7 * 2 + 1; $i++): ?>
                                         <?php
@@ -90,15 +120,28 @@
                                             $timeStr = $time->format('h:i A'); // 12-hour format
                                             $buttonId = 'btn-' . $time->format('Hi');
                                             $timecheck = $time->format('H:i');
+                                            $nullTableIdCount = 0;
+                                            $notNullTableIdCount = 0;
+                                            $checkedInCount = 0;
+
+                                            // Retrieve counts from grouped reservations
+                                            foreach ($groupedReservations as $key => $reservation) {
+                                                $areTimesSame = $timecheck === $key;
+
+                                                if ($areTimesSame) {
+                                                    $nullTableIdCount = $reservation['null_tableid_count'];
+                                                    $notNullTableIdCount =
+                                                        $reservation['not_null_tableid_reserved_count'];
+                                                    $checkedInCount = $reservation['checked_in_count'];
+                                                    break; // Exit loop once matching time is found
+                                                }
+                                            }
                                         ?>
 
                                         <div class="col-6 col-sm-4 col-md-3 p-1">
                                             <div class="card time-slot-card" id="<?php echo e($buttonId); ?>"
-                                                data-time="<?php echo e($time->format('H:i')); ?>"
-                                                style="
-                                                height: 115px;
-                                            ">
-                                                <div class="card-body">
+                                                data-time="<?php echo e($time->format('H:i')); ?>" style="height: 135px;">
+                                                <div class="card-body" style="display: flex;align-items: center; ">
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="time">
@@ -107,128 +150,50 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
-                                                            <div class="booking_header">
-                                                                BOOKINGS
-                                                            </div>
+                                                            <div class="booking_header">BOOKINGS</div>
                                                         </div>
                                                         <div class="col-12">
                                                             <div class="booking_number">
-                                                                <?php
-                                                                    $nullTableIdCount = 0;
-                                                                    $notNullTableIdCount = 0;
-                                                                ?>
-
-                                                                <?php $__currentLoopData = $groupedReservations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $reservation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                    <?php
-                                                                        try {
-                                                                            $time1 = \Carbon\Carbon::createFromFormat(
-                                                                                'H:i',
-                                                                                $timecheck,
-                                                                            );
-                                                                            $time2 = \Carbon\Carbon::createFromFormat(
-                                                                                'H:i',
-                                                                                $key,
-                                                                            );
-                                                                            $areTimesSame = $time1->eq($time2);
-                                                                        } catch (\Carbon\Exceptions\InvalidFormatException $e) {
-                                                                            $areTimesSame = false;
-                                                                        }
-                                                                    ?>
-
-                                                                    <?php if($areTimesSame): ?>
+                                                                <div
+                                                                    class="row mt-1 "style="display: flex;justify-content: space-evenly;">
+                                                                    <?php if($nullTableIdCount || $notNullTableIdCount || $checkedInCount): ?>
                                                                         <?php
-                                                                            $nullTableIdCount =
-                                                                                $reservation['null_tableid_count'];
-                                                                            $notNullTableIdCount =
-                                                                                $reservation['not_null_tableid_count'];
+                                                                            $total =
+                                                                                $notNullTableIdCount + $checkedInCount;
+                                                                            $total = $table_count - $total;
                                                                         ?>
+
+                                                                        <?php $__currentLoopData = [
+            ['count' => $nullTableIdCount, 'color' => '#585f9c', 'icon' => 'blue.png', 'tooltip' => 'Un Booked Table'],
+            ['count' => $notNullTableIdCount, 'color' => '#d44a47', 'icon' => 'red.png', 'tooltip' => 'Booked Table'],
+            ['count' => $checkedInCount, 'color' => '#288e70', 'icon' => 'green.png', 'tooltip' => 'Checked In Table'],
+            //,['count' => $total, 'color' => '#7E7D82', 'icon' => 'gry.png', 'tooltip' => 'Remaining Table']
+        ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php if($data['count']): ?>
+                                                                                <div class="col-6 mt-1"
+                                                                                    style="display: flex; align-items: center; justify-content: space-evenly;"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    title="<?php echo e($data['tooltip']); ?>"
+                                                                                    class="custom-tooltip">
+                                                                                    <div class="icontimeslot">
+                                                                                        <img src="<?php echo e(URL::to('assets/img/' . $data['icon'])); ?>"
+                                                                                            alt=""
+                                                                                            style="height: 20px;">
+                                                                                    </div>
+                                                                                    <div class="icontimeslot_size"
+                                                                                        style="font-size: 15px; color: <?php echo e($data['color']); ?>;margin-top:3px">
+                                                                                        <?php echo e($data['count']); ?>
+
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                     <?php endif; ?>
-                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                                <div class="row mt-1">
-                                                                    <?php if($nullTableIdCount && $nullTableIdCount): ?>
-                                                                        <div class="col-6"
-                                                                            style="display: flex;align-items: center;justify-content: space-evenly;"
-                                                                            data-bs-toggle="tooltip" title="Un Booked Table"
-                                                                            class="custom-tooltip">
-
-                                                                            <div class="icontimeslot">
-                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
-                                                                                    alt="" style="height: 15px;">
-                                                                            </div>
-                                                                            <div class="icontimeslot_size"
-                                                                                style="font-size: 15px; color:#288e70">
-                                                                                <?php echo e($nullTableIdCount); ?>
-
-                                                                            </div>
-
-                                                                        </div>
-
-
-                                                                        <div class="col-6"
-                                                                            style="display: flex;align-items: center;justify-content: space-evenly; "
-                                                                            data-bs-toggle="tooltip" title="Booked Table"
-                                                                            class="custom-tooltip">
-                                                                            <div class="icontimeslot">
-                                                                                <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
-                                                                                    alt="" style="height: 15px;">
-                                                                            </div>
-                                                                            <div class="icontimeslot_size"
-                                                                                style="font-size: 15px ;">
-                                                                                <?php echo e($notNullTableIdCount); ?>
-
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                    <?php else: ?>
-                                                                        <?php if($nullTableIdCount): ?>
-                                                                            <div class="col-12"
-                                                                                style="display: flex;align-items: center;justify-content: space-evenly;"
-                                                                                data-bs-toggle="tooltip"
-                                                                                title="Un Booked Table"
-                                                                                class="custom-tooltip">
-
-                                                                                <div class="icontimeslot">
-                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_3.png')); ?>"
-                                                                                        alt=""
-                                                                                        style="height: 15px;">
-                                                                                </div>
-                                                                                <div class="icontimeslot_size"
-                                                                                    style="font-size: 15px; color:#288e70">
-                                                                                    <?php echo e($nullTableIdCount); ?>
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        <?php endif; ?>
-                                                                        <?php if($notNullTableIdCount): ?>
-                                                                            <div class="col-12"
-                                                                                style="display: flex;align-items: center;justify-content: space-evenly; "
-                                                                                data-bs-toggle="tooltip"
-                                                                                title="Booked Table" class="custom-tooltip">
-                                                                                <div class="icontimeslot">
-                                                                                    <img src="<?php echo e(URL::to('assets/img/Ellipse_4.png')); ?>"
-                                                                                        alt=""
-                                                                                        style="height: 15px;">
-                                                                                </div>
-                                                                                <div class="icontimeslot_size"
-                                                                                    style="font-size: 15px ;">
-                                                                                    <?php echo e($notNullTableIdCount); ?>
-
-                                                                                </div>
-
-
-                                                                            </div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Add a hidden submit button -->
-
                                                 </div>
                                             </div>
                                         </div>
@@ -270,11 +235,7 @@
 
                         <div class="col-12">
                             <div class="row ">
-                                <div class="col-12"
-                                    style="
-                                display: flex;
-                                flex-direction: row-reverse;
-                            ">
+                                <div class="col-12" style="display: flex;flex-direction: row-reverse;">
                                     <div class="search_mobile">
                                         <input type="text" class="form-control <?php $__errorArgs = ['Mobile'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -287,7 +248,6 @@ unset($__errorArgs, $__bag); ?>"
                                             id="inputMobile" placeholder="Mobile or Name" name="Mobile"
                                             value="<?php echo e(old('Mobile')); ?>">
                                     </div>
-
                                 </div>
 
 
@@ -457,27 +417,50 @@ unset($__errorArgs, $__bag); ?>"
                                                 </div>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                            <?php $__currentLoopData = $notNulltable; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $table_list_notnull): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <div class="col-12">
 
-                                                    <div class="table_list_box ">
+                                            <?php $__currentLoopData = $notNulltable; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $table_list_notnull): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php
+                                                    // Define a class based on the status
+                                                    $borderClass = '';
+                                                    if ($table_list_notnull->Status === 'reserved') {
+                                                        $borderClass = 'border-red';
+                                                        $badgeColor = '#d44a47'; // Class for reserved status
+                                                    } elseif ($table_list_notnull->Status === 'checkedin') {
+                                                        $borderClass = 'border-green';
+                                                        $badgeColor = '#288e70'; // Class for checked in status
+                                                    }
+                                                ?>
+
+                                                <div class="col-12">
+                                                    <div class="table_list_box <?php echo e($borderClass); ?>">
                                                         <div class="table_list_box_body">
                                                             <div class="row"
-                                                                style="display: flex;align-items: center;align-content: center;">
+                                                                style="display: flex; align-items: center; align-content: center;">
+                                                                <div class="col-12">
+                                                                    <div class="table-status"
+                                                                        style="display: flex;flex-direction: row-reverse;">
+                                                                        <?php if($table_list_notnull->Status === 'reserved'): ?>
+                                                                            <span class="badge"
+                                                                                style="background-color: <?php echo e($badgeColor); ?>;">Reserved</span>
+                                                                        <?php elseif($table_list_notnull->Status === 'checkedin'): ?>
+                                                                            <span class="badge "
+                                                                                style="background-color: <?php echo e($badgeColor); ?>;">Checked
+                                                                                In</span>
+                                                                        <?php endif; ?>
+
+                                                                    </div>
+                                                                </div>
                                                                 <div class="col-5"
-                                                                    style="display: flex;padding: 20px 20px;align-items: center;">
+                                                                    style="display: flex; padding: 20px 20px; align-items: center;">
                                                                     <div class="list-box-icons">
                                                                         <i class="bi bi-person-vcard"></i>
                                                                     </div>
-
                                                                     <div class="list-box-details">
                                                                         <div class="list-box-details-name">
                                                                             <span><?php echo e(ucwords($table_list_notnull->customer_name)); ?></span>
                                                                         </div>
                                                                         <div class="list-box-details-number">
-
                                                                             <?php
-
                                                                                 $formattedMobileNo =
                                                                                     substr(
                                                                                         $table_list_notnull->mobile_no,
@@ -496,28 +479,19 @@ unset($__errorArgs, $__bag); ?>"
                                                                                         6,
                                                                                     );
                                                                             ?>
-
                                                                             <span><?php echo e($formattedMobileNo); ?></span>
-
-                                                                            
                                                                         </div>
                                                                         <div class="list-box-details-email">
-                                                                            <span><?php echo e($table_list_notnull->email); ?><span>
+                                                                            <span><?php echo e($table_list_notnull->email); ?></span>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
                                                                 <div class="col-2">
                                                                     <div class="list-box-number">
-
                                                                         <div class="list-box-number-icon">
-
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                                 viewBox="0 0 640 512"
-                                                                                style="
-                                                                            margin-top: 10px;
-                                                                            height: 20px;
-                                                                        "><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                                                style="margin-top: 10px; height: 20px;">
                                                                                 <path
                                                                                     d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192l42.7 0c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0L21.3 320C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7l42.7 0C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3l-213.3 0zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352l117.3 0C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7l-330.7 0c-14.7 0-26.7-11.9-26.7-26.7z" />
                                                                             </svg>
@@ -525,11 +499,7 @@ unset($__errorArgs, $__bag); ?>"
                                                                         <div class="list-box-number-count">
                                                                             <p><?php echo e($table_list_notnull->no_of_people); ?></p>
                                                                         </div>
-
-
                                                                     </div>
-
-
                                                                 </div>
                                                                 <div class="col-5">
                                                                     <div class="list-box-table">
@@ -561,81 +531,52 @@ unset($__errorArgs, $__bag); ?>"
 
                                                                             </svg>
                                                                         </div>
-                                                                        <div id="list-box-table-button"
-                                                                            class="list-box-table-button"
-                                                                            style="
-                                                                            display: flex;
-                                                                            justify-content: flex-end;
-                                                                            align-items: center;
-                                                                        ">
-
+                                                                        <div class="list-box-table-button"
+                                                                            style="display: flex; justify-content: flex-end; align-items: center;">
                                                                             <div class="edit-list-table"
-                                                                                style="
-                                                                            padding: 0px 5px;
-                                                                        ">
+                                                                                style="padding: 0px 5px;">
                                                                                 <span><?php echo e($table_list_notnull->table_no); ?></span>
-
-
                                                                             </div>
                                                                             <div class="edit-list-table-icon"
                                                                                 style="padding: 0px 0px 5px 5px;">
                                                                                 <div class="btn-group">
-                                                                                    <button class="btn  " type="button"
+                                                                                    <button class="btn" type="button"
                                                                                         data-bs-toggle="dropdown"
-                                                                                        data-bs-auto-close="true"
                                                                                         aria-expanded="false">
                                                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                            style="fill: black ;height:25px"
-                                                                                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                                                            style="fill: black; height: 25px"
+                                                                                            viewBox="0 0 512 512">
                                                                                             <path
                                                                                                 d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z" />
                                                                                         </svg>
-
-
                                                                                     </button>
                                                                                     <ul class="dropdown-menu">
+                                                                                        <?php if($table_list_notnull->Status != 'checkedin'): ?>
+                                                                                            <li><a class="dropdown-item"
+                                                                                                    href="<?php echo e(route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Check
+                                                                                                    In</a></li>
+                                                                                        <?php endif; ?>
                                                                                         <li><a class="dropdown-item"
-                                                                                                href="<?php echo e(route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Check
-                                                                                                In
-                                                                                            </a></li>
-
-                                                                                         <li><a class="dropdown-item"
                                                                                                 href="<?php echo e(route('admin.canceldtable', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Cancel</a>
-                                                                                        </li> 
-                                                                                        
+                                                                                        </li>
                                                                                         <li><a class="dropdown-item"
                                                                                                 href="<?php echo e(route('admin.assigntableedit', ['id' => Crypt::encrypt($table_list_notnull->table_id)])); ?>">Edit
                                                                                                 Table</a></li>
                                                                                     </ul>
                                                                                 </div>
-
-
-
-
-
-
-
-
                                                                             </div>
-
-
-
                                                                         </div>
-
-
                                                                     </div>
-
+                                                                    
                                                                 </div>
-
-
                                                             </div>
-
                                                         </div>
                                                     </div>
-
-
                                                 </div>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
+
 
                                         </div>
 
