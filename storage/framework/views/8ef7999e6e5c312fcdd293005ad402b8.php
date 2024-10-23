@@ -75,9 +75,11 @@
                                                 $total = $table_count - $total;
                                             ?>
 
-                                            <?php $__currentLoopData = [['count' => $nullTableIdCount, 'color' => '#585f9c', 'icon' => 'blue.png', 'tooltip' => 'Un Booked Table'], ['count' => $notNullTableIdCount, 'color' => '#d44a47', 'icon' => 'red.png', 'tooltip' => 'Booked Table'], 
-                                            //['count' => $checkedInCount, 'color' => '#288e70', 'icon' => 'green.png', 'tooltip' => 'Checked In Table']
-                                            ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php $__currentLoopData = [
+        ['count' => $nullTableIdCount, 'color' => '#585f9c', 'icon' => 'blue.png', 'tooltip' => 'Un Booked Table'],
+        ['count' => $notNullTableIdCount, 'color' => '#d44a47', 'icon' => 'red.png', 'tooltip' => 'Booked Table'],
+        //['count' => $checkedInCount, 'color' => '#288e70', 'icon' => 'green.png', 'tooltip' => 'Checked In Table']
+    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php if($data['count']): ?>
                                                     <div class="col-6 mt-1"
                                                         style="display: flex; align-items: center; justify-content: space-evenly;"
@@ -114,7 +116,7 @@
     <div class="col-12">
         <button type="submit" id="new_resn_btn" class="btn btn-primary mt-3 submit-btn"
             style="display: none;
-            flex-direction: row-reverse">Added New Reservation</button>
+            flex-direction: row-reverse">Add New Reservation</button>
     </div>
 
 </div>

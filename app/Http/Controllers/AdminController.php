@@ -134,9 +134,6 @@ class AdminController extends Controller
         $time = $request->time;
         $date = $request->date;
 
-
-
-
         $formattedDate = Carbon::parse($date)->startOfDay()->format('Y-m-d H:i:s');
 
         $timeCarbon = Carbon::parse($time);

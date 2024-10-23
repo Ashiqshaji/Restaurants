@@ -302,4 +302,4 @@
 
     </div>
 </div>
-<?php /**PATH C:\xampp\htdocs\Restaurants\resources\views\Admin\Reservation\Partials\list.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\Restaurants\resources\views/Admin/Reservation/Partials/list.blade.php ENDPATH**/ ?>

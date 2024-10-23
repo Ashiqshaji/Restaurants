@@ -268,7 +268,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
 
-                                                        @if ($table_list_notnull->Status != 'checkedin')
+                                                        @if ($table_list_notnull2->Status != 'checkedin')
                                                             <li><a class="dropdown-item"
                                                                     href="{{ route('admin.checkin', ['id' => Crypt::encrypt($table_list_notnull2->table_id)]) }}">Check
                                                                     In</a></li>

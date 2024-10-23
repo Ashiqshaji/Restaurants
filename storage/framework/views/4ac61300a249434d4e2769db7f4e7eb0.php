@@ -9,13 +9,14 @@
                  $isSelectable = $results->reservationData_color != 'Yes';
              ?>
              <div class="col-2">
-                 <div class="card mt-3 <?php echo e($colorClass); ?>" id="card<?php echo e($results->btnTexts); ?>" style="">
+                 <div class="card mt-3 <?php echo e($colorClass); ?>" id="card<?php echo e($results->btnTexts); ?>"
+                     style="cursor: <?php echo e($isSelectable ? 'pointer' : 'not-allowed'); ?>;">
                      <div class="card-body">
-
-                         <input class="form-check-input" type="checkbox" name="selected_items[]"
-                             value="<?php echo e($results->btnTexts); ?>" id="item<?php echo e($results->btnTexts); ?>"
-                             onclick="toggleCard('<?php echo e($results->btnTexts); ?>')" style="display:none">
-
+                         <?php if($isSelectable): ?>
+                             <input class="form-check-input" type="checkbox" name="selected_items[]"
+                                 value="<?php echo e($results->btnTexts); ?>" id="item<?php echo e($results->btnTexts); ?>"
+                                 onclick="toggleCard('<?php echo e($results->btnTexts); ?>')" style="display:none">
+                         <?php endif; ?>
                          <label for="item<?php echo e($results->btnTexts); ?>">
                              <h4 class="card-title"><?php echo e(htmlspecialchars($results->btnText)); ?></h4>
                          </label>
