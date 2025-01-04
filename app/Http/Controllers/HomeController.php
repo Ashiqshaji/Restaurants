@@ -24,133 +24,7 @@ class HomeController extends Controller
 
 
 
-    // public  function insertOrUpdateCustomerSupplier($name,  $email, $mobile, $guests, $reservation_time, $reservation_date, $reservation_till)
-    // {
-    //     // Step 1: Check if the customer exists
-    //     $existingCustomer = DB::table('mst_customer_supplier')
-    //         ->where('email', $email)
-    //         ->Where('mobile_no', $mobile)
-    //         ->first();
 
-    //     if ($existingCustomer) {
-    //         // Step 2: Update the existing customer
-    //         DB::table('mst_customer_supplier')
-    //             ->where('cus_key', $existingCustomer->cus_key)
-    //             ->update([
-    //                 'customer_name' => $name,
-    //                 'mobile_no' => $mobile,
-    //                 'email' => $email,
-    //             ]);
-    //         DB::table('users')
-    //             ->updateOrInsert(
-    //                 ['cus_key' => $existingCustomer->cus_key], // Search criteria
-    //                 [
-    //                     'name' => $name,
-    //                     'email' => $email,
-    //                     'cus_key' => $existingCustomer->cus_key
-    //                 ] // Data to update or insert
-    //             );
-
-    //         $cuskey = $existingCustomer->cus_key;
-    //     } else {
-
-    //         $cuskey = DB::table('sys_company_info')
-    //             ->selectRaw('CAST(inv_loc_key AS NVARCHAR(50)) + cus_key AS cuskey')
-    //             ->value('cuskey');
-
-    //         // Step 4: Insert a new customer
-    //         DB::table('mst_customer_supplier')->insert([
-    //             'cus_key' => $cuskey,
-    //             'customer_name' => $name,
-    //             'mobile_no' => $mobile,
-    //             'email' => $email,
-    //             'type' => 'C',
-    //             'email_status' => '1',
-    //         ]);
-
-    //         // Step 4: Insert a new customer
-    //         DB::table('users')->insert([
-    //             'cus_key' => $cuskey,
-    //             'name' => $name,
-    //             'email' => $email,
-    //         ]);
-    //     }
-
-
-
-    //     DB::table('res_reserved_table')->insert([
-    //         'cus_key' => $cuskey,
-    //         'no_of_people' => $guests,
-    //         'reservation_date' => $reservation_date,
-    //         'reservation_from' => $reservation_time,
-    //         'reservation_till' => $reservation_till,
-    //         'reserved_on' => now(),
-    //         'reserved_blocks' => $reservation_time,
-    //         'reserved_by' => 'Admin',
-    //         'status' => 'reserved',
-    //     ]);
-
-    //     return $cuskey;
-    // }
-
-
-    // public function insertOrUpdateCustomerSupplier($name, $email, $mobile, $guests, $reservation_time, $reservation_date, $reservation_till)
-    // {
-    //     // Step 1: Check if the customer exists
-    //     $existingCustomer = DB::table('mst_customer_supplier')
-    //         ->select('cus_key')
-    //         ->where('mobile_no', $mobile)
-    //         ->first();
-
-
-
-    //     if (!$existingCustomer) {
-    //         $cuskey = DB::table('sys_company_info')
-    //             ->selectRaw('CAST(inv_loc_key AS NVARCHAR(50)) + cus_key AS cuskey')
-    //             ->value('cuskey');
-
-    //         DB::table('mst_customer_supplier')->insert([
-    //             'cus_key' => $cuskey,
-    //             'customer_name' => $name,
-    //             'mobile_no' => $mobile,
-    //             'email' => $email,
-    //             'type' => 'C',
-    //             'email_status' => '1',
-    //         ]);
-
-    //     } else {
-    //         $cuskey = $existingCustomer->cus_key;
-    //         DB::table('mst_customer_supplier')
-    //             ->where('cus_key', $cuskey)
-    //             ->update([
-    //                 'customer_name' => $name,
-    //                 'mobile_no' => $mobile,
-    //                 'email' => $email,
-
-    //             ]);
-    //     }
-
-
-
-    //     DB::table('res_reserved_table')->insert([
-    //         'cus_key' => $cuskey,
-    //         'no_of_people' => $guests,
-    //         'reservation_date' => $reservation_date,
-    //         'reservation_from' => $reservation_time,
-    //         'reservation_till' => $reservation_till,
-    //         'table_no'=>NULL,
-    //         'sectionID'=>null,
-    //         'reserved_on' => now(),
-    //         'reserved_blocks' => $reservation_time,
-    //         'reserved_by' => 'Admin',
-    //         'status' => 'reserved',
-    //     ]);
-
-
-
-
-    //     return $cuskey;
-    // }
 
     public function insertOrUpdateCustomerSupplier($name, $email, $mobile, $guests, $reservation_time, $reservation_date, $reservation_till)
     {
@@ -240,6 +114,7 @@ class HomeController extends Controller
     }
     public function Save_Reservation(Request $request)
     {
+
 
         $reservation_time = $this->convertToAmPm($request->reservation_time);
 

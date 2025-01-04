@@ -1,158 +1,139 @@
 <script src="<?php echo e(URL::to('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')); ?>"></script>
 <script src="<?php echo e(URL::to('https://code.jquery.com/jquery-3.7.1.js')); ?>"
     integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<!-- jQuery (must be loaded first) -->
+
+
+<!-- Bootstrap Datepicker CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+
+
 
 <script>
+    // Populate all time slots
+    const timeSlots = [
+        '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM',
+        '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM',
+        '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM'
+    ];
+
+    // Function to populate the dropdown
+    function populateTimeDropdown() {
+        const dropdown = $('#timeDropdown');
+        dropdown.empty(); // Clear existing content
+
+        // Add each time slot as a clickable item
+        timeSlots.forEach(time => {
+            dropdown.append(
+                `<div class="time-slot-card" style="padding: 10px; margin: 5px; cursor: pointer; border: 1px solid #ccc; text-align: center;" onclick="selectTime('${time}')">${time}</div>`
+            );
+        });
+
+        // If no future times are available, hide the dropdown
+        if (!dropdown.children().length) {
+            dropdown.hide();
+        }
+    }
+
+    // Function to toggle the dropdown visibility
+    function toggleTimeDropdown() {
+        const dropdown = $('#timeDropdown');
+        if (dropdown.is(':visible')) {
+            dropdown.hide();
+        } else {
+            populateTimeDropdown(); // Populate the dropdown when shown
+            dropdown.show();
+        }
+    }
+
+    // Function to update the selected time display
+    function selectTime(time) {
+        $('#TimeDisplay').text(time); // Update the display
+        $('#timeDropdown').hide(); // Hide the dropdown
+        $('#TimeDisplayvalue').val(time);
+    }
+
+    // Close the dropdown if clicked outside
+    $(document).click(function(event) {
+        if (!$(event.target).closest('#timeDropdown, .ms-2').length) {
+            $('#timeDropdown').hide();
+        }
+    });
+
+    // Trigger the time dropdown on icon click
+    $('.ms-2').on('click', function() {
+        toggleTimeDropdown();
+    });
+
+    function triggerDatePicker() {
+        const dateInput = document.getElementById('selectedDate');
+        document.getElementById('selectedDate').showPicker();
+    }
+    $(document).ready(function() {
+        // Initialize datepicker for the input field
+        $('#dateInput').datepicker({
+            format: 'mm/dd/yyyy',
+            todayBtn: 'linked',
+            autoclose: true
+        });
+
+        // Trigger the datepicker when the calendar icon is clicked
+        $('.bi-calendar4-week').click(function() {
+            $('#dateInput').datepicker('show');
+        });
+
+        // Initialize the current date display
+        const now = new Date();
+        const optionsDay = {
+            weekday: 'long'
+        };
+        const optionsDate = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        };
+
+        $('#dayDisplay').text(now.toLocaleDateString('en-US', optionsDay));
+        $('#dateDisplay').text(now.toLocaleDateString('en-US', optionsDate));
+
+        // Update date and day display when the date input changes
+        $('#selectedDate').on('change', function() {
+            const selectedDate = new Date(this.value);
+            $('#dayDisplay').text(selectedDate.toLocaleDateString('en-US', optionsDay));
+            $('#dateDisplay').text(selectedDate.toLocaleDateString('en-US', optionsDate));
+        });
+    });
+    const guestSelect = document.getElementById('inputGuest');
+
+    // Dynamically generate options from 1 to 7
+    for (let i = 1; i <= 7; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        guestSelect.appendChild(option);
+    }
     document.addEventListener('DOMContentLoaded', function() {
         let selectedDate = '';
         let selectedTime = '';
 
-        // Initialize FullCalendar
-        const calendarEl = document.getElementById('calendar');
 
-        if (!calendarEl) {
-            console.error('Calendar element not found.');
-            return;
-        }
-
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            dayCellDidMount: function(info) {
-                if (info.dateStr === new Date().toISOString().split('T')[0]) {
-                    info.el.classList.add('highlight-today');
-                }
-            },
-            dateClick: function(info) {
-                handleDateClick(info.dateStr);
-            },
-            headerToolbar: {
-                left: 'prev',
-                center: 'title',
-                right: 'next'
-            },
-            dayHeaderFormat: {
-                weekday: 'narrow'
-            },
-        });
-
-        calendar.render();
-
-        function handleDateClick(dateStr) {
-            document.querySelectorAll('.fc-daygrid-day').forEach(day => {
-                day.classList.remove('selected-date');
-            });
-
-            const selectedDateEl = document.querySelector(`.fc-daygrid-day[data-date="${dateStr}"]`);
-            if (selectedDateEl) {
-                selectedDateEl.classList.add('selected-date');
-            }
-
-            selectedDate = new Date(dateStr);
-            updateModalDateInfo();
-            fetchTimeSlots(selectedDate);
-        }
-
-        function updateModalDateInfo() {
-            const modalDateEl = document.getElementById('modalDate');
-            const modalMonthEl = document.getElementById('modalMonth');
-            const modalYearEl = document.getElementById('modalYear');
-            const modalDayEl = document.getElementById('modalDay');
-
-            if (modalDateEl) modalDateEl.textContent = selectedDate.toISOString().split('T')[0];
-            if (modalMonthEl) modalMonthEl.textContent = selectedDate.toLocaleString('default', {
-                month: 'long'
-            });
-            if (modalYearEl) modalYearEl.textContent = selectedDate.getFullYear();
-            if (modalDayEl) modalDayEl.textContent = selectedDate.toLocaleString('default', {
-                weekday: 'long'
-            });
-        }
-
-        function fetchTimeSlots(date) {
-            // Add your AJAX call here
-        }
-
-        function handleTimeSlotSelection(event) {
-            event.preventDefault();
-            document.querySelectorAll('.time-slot-btn').forEach(button => {
-                button.classList.remove('btn-danger-reser');
-            });
-
-            this.classList.add('btn-danger-reser');
-            selectedTime = this.getAttribute('data-time');
-            const selectedTimeEl = document.getElementById('selectedTime');
-            if (selectedTimeEl) {
-                selectedTimeEl.textContent = selectedTime;
-            }
-        }
-
-        document.querySelectorAll('.time-slot-btn').forEach(btn => {
-            btn.addEventListener('click', handleTimeSlotSelection);
-        });
-
-        function showConfirmModal() {
-            const confirmModal = document.getElementById('ConfirmModal');
-            if (confirmModal) {
-                confirmModal.addEventListener('show.bs.modal', function() {
-                    updateConfirmModalContent();
-                });
-
-                $('#ConfirmModal').modal('show');
-            }
-        }
-
-        function formatTime(timeStr) {
-            const time = new Date('1970-01-01T' + timeStr + 'Z'); // Create a date object using the time string
-            const hours = time.getUTCHours(); // Get hours in 24-hour format
-            const minutes = time.getUTCMinutes(); // Get minutes
-            const ampm = hours >= 12 ? 'PM' : 'AM'; // Determine AM/PM
-            const formattedHours = String(hours % 12 || 12).padStart(2,
-                '0'); // Convert to 12-hour format with leading zero
-            const formattedMinutes = String(minutes).padStart(2, '0'); // Format minutes with leading zero
-
-            return `${formattedHours}:${formattedMinutes} ${ampm}`;
-        }
-
-        function updateConfirmModalContent() {
-            const confirmModal = document.getElementById('ConfirmModal');
-            let name = document.getElementById('inputName').value || 'No name provided';
-            let email = document.getElementById('inputEmail').value || 'No email provided';
-            let mobile = document.getElementById('inputMobile').value || 'No mobile number provided';
-            let guests = document.getElementById('inputGuest').value || 'Number of guests not specified';
-
-            const modalTitle = confirmModal.querySelector('.modal-title');
-            const modalBodyDate = confirmModal.querySelector('#modalDate');
-            const modalBodyTime = confirmModal.querySelector('#selectedTime');
-            const modalBodyMonth = confirmModal.querySelector('#modalMonth');
-            const modalBodyYear = confirmModal.querySelector('#modalYear');
-            const modalBodyDay = confirmModal.querySelector('#modalDay');
-            const modalBodyName = confirmModal.querySelector('#modalName');
-            const modalBodyEmail = confirmModal.querySelector('#modalEmail');
-            const modalBodyMobile = confirmModal.querySelector('#modalMobile');
-            const modalBodyGuests = confirmModal.querySelector('#modalGuests');
-
-            if (modalTitle) modalTitle.textContent = 'Please re-Confirm the details for reservation';
-            if (modalBodyDate) modalBodyDate.textContent =
-                `${selectedDate.getDate().toString().padStart(2, '0')} ${selectedDate.getFullYear()}`;
-            if (modalBodyTime) modalBodyTime.textContent = formatTime(selectedTime);
-            if (modalBodyMonth) modalBodyMonth.textContent = selectedDate.toLocaleString('default', {
-                month: 'long'
-            });
-            if (modalBodyYear) modalBodyYear.textContent = selectedDate.getFullYear();
-            if (modalBodyDay) modalBodyDay.textContent = selectedDate.toLocaleString('default', {
-                weekday: 'long'
-            });
-            if (modalBodyName) modalBodyName.textContent = name;
-            if (modalBodyEmail) modalBodyEmail.textContent = email;
-            if (modalBodyMobile) modalBodyMobile.textContent = mobile;
-            if (modalBodyGuests) modalBodyGuests.textContent = guests;
-        }
-
+        // Call the initialization function when the page loads
+        // window.onload = initializePage;
+        // Confirm reservation button click event
         document.getElementById('ConfirmModal_Reservation').addEventListener('click', function() {
             let name = document.getElementById('inputName').value;
             let email = document.getElementById('inputEmail').value;
             let mobile = document.getElementById('inputMobile').value;
             let guests = document.getElementById('inputGuest').value;
+            let selectedDate = new Date(document.getElementById('selectedDate')
+                .value); // Convert to Date object
+            let selectedTime = document.getElementById('TimeDisplayvalue').value;
+
 
             if (name && email && mobile && guests && selectedDate && selectedTime) {
                 let now = new Date();
@@ -166,10 +147,18 @@
                 }
 
                 if (selectedDate.toDateString() === now.toDateString()) {
-                    let [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
-                    let selectedDateTime = new Date(selectedDate);
-                    selectedDateTime.setHours(selectedHour, selectedMinute, 0, 0);
+                    // Convert selectedTime to 24-hour format
+                    let [time, period] = selectedTime.split(' ');
+                    let [selectedHour, selectedMinute] = time.split(':').map(Number);
 
+                    if (period === 'PM' && selectedHour !== 12) selectedHour += 12;
+                    if (period === 'AM' && selectedHour === 12) selectedHour = 0;
+
+                    let selectedDateTime = new Date(selectedDate);
+                    selectedDateTime.setHours(selectedHour, selectedMinute, 0,
+                        0); // Set selected time on the date
+
+                    // Check if selected time is in the past
                     if (selectedDateTime <= now) {
                         showWarningMessage('Reservation is not available for past times.',
                             'Warning Message');
@@ -177,11 +166,64 @@
                     }
                 }
 
+
                 showConfirmModal();
             } else {
                 showWarningMessage('Please Enter the details', 'Details of Reservation Missing');
             }
         });
+
+        function showConfirmModal() {
+            const confirmModal = document.getElementById('ConfirmModal');
+            if (confirmModal) {
+                confirmModal.addEventListener('show.bs.modal', function() {
+                    updateConfirmModalContent();
+                });
+
+                $('#ConfirmModal').modal('show');
+            }
+        }
+
+        function updateConfirmModalContent() {
+            const confirmModal = document.getElementById('ConfirmModal');
+           
+            let name = document.getElementById('inputName').value;
+            let email = document.getElementById('inputEmail').value;
+            let mobile = document.getElementById('inputMobile').value;
+            let guests = document.getElementById('inputGuest').value;
+            let selectedDate = new Date(document.getElementById('selectedDate')
+                .value); // Convert to Date object
+            let selectedTime = document.getElementById('TimeDisplayvalue').value;
+
+
+            const modalTitle = confirmModal.querySelector('.modal-title');
+            const modalBodyDate = confirmModal.querySelector('#modalDate');
+            const modalBodyTime = confirmModal.querySelector('#selectedTime');
+            const modalBodyMonth = confirmModal.querySelector('#modalMonth');
+            const modalBodyYear = confirmModal.querySelector('#modalYear');
+            const modalBodyDay = confirmModal.querySelector('#modalDay');
+            const modalBodyName = confirmModal.querySelector('#modalName');
+            const modalBodyEmail = confirmModal.querySelector('#modalEmail');
+            const modalBodyMobile = confirmModal.querySelector('#modalMobile');
+            const modalBodyGuests = confirmModal.querySelector('#modalGuests');
+
+            if (modalTitle) modalTitle.textContent = 'Please re-Confirm the details for reservation';
+
+            if (modalBodyDate) modalBodyDate.textContent =
+                `${selectedDate.getDate().toString().padStart(2, '0')} ${selectedDate.getFullYear()}`;
+            if (modalBodyTime) modalBodyTime.textContent = selectedTime;
+            if (modalBodyMonth) modalBodyMonth.textContent = selectedDate.toLocaleString('default', {
+                month: 'long'
+            });
+            if (modalBodyYear) modalBodyYear.textContent = selectedDate.getFullYear();
+            if (modalBodyDay) modalBodyDay.textContent = selectedDate.toLocaleString('default', {
+                weekday: 'long'
+            });
+            if (modalBodyName) modalBodyName.textContent = name;
+            if (modalBodyEmail) modalBodyEmail.textContent = email;
+            if (modalBodyMobile) modalBodyMobile.textContent = mobile;
+            if (modalBodyGuests) modalBodyGuests.textContent = guests;
+        }
 
         function showWarningMessage(message, title) {
             $('#WarningModal').modal('show');
@@ -195,14 +237,32 @@
             });
         }
 
+        function convertTo24HourFormat(time) {
+            const [hourMinute, period] = time.split(' '); // Split the time into hour and AM/PM
+            let [hour, minute] = hourMinute.split(':').map(Number);
+
+            if (period === 'PM' && hour !== 12) {
+                hour += 12; // Convert PM times (except 12) to 24-hour format
+            } else if (period === 'AM' && hour === 12) {
+                hour = 0; // Convert 12 AM to 00 hours
+            }
+
+            
+            return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+        }
+
         function handleSaveReservation() {
             let name = document.getElementById('inputName').value;
             let email = document.getElementById('inputEmail').value;
             let mobile = document.getElementById('inputMobile').value;
             let guests = document.getElementById('inputGuest').value;
-            let reservationTime = selectedTime;
-            const reservationDate = selectedDate;
+            let selectedDate = new Date(document.getElementById('selectedDate').value);
+            let selectedTime = document.getElementById('TimeDisplayvalue').value;
+            let time24Hour = convertTo24HourFormat(selectedTime);
+            let reservationTime = time24Hour;
+            const reservationDate = selectedDate || new Date().toISOString().split('T')[0];
 
+            console.log('selectedDate', selectedDate);
             const year = reservationDate.getFullYear();
             const month = (reservationDate.getMonth() + 1).toString().padStart(2, '0');
             const day = reservationDate.getDate().toString().padStart(2, '0');
@@ -382,5 +442,8 @@
             }
         });
     });
+    // document.getElementById('selectedDate').addEventListener('click', function() {
+    //     document.getElementById('calendar').style.display = 'block';
+    // });
 </script>
 <?php /**PATH C:\xampp\htdocs\Restaurants\resources\views\Frontend\Reservation\reservationscript.blade.php ENDPATH**/ ?>
